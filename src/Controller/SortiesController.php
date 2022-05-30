@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,10 +12,19 @@ class SortiesController extends AbstractController
     /**
      * @Route("/accueil", name="sorties_liste")
      */
-    public function liste(): Response
+    public function liste(SortieRepository $repository): Response
     {
+        //On instancie une date à N-1 mois
+        $date = new \DateTime('now-1month');
+        dump($date);
+
+        //Puis, on affiche toutes les sorties supérieures ou égales à cette date
+        $sorties = $repository->listeSortiesMoinsUnMois($date);
+
+        dump($sorties);
+
         return $this->render('sorties/listeSorties.html.twig', [
-            'controller_name' => 'SortiesController',
+            'sorties' => $sorties,
         ]);
     }
 

@@ -1,0 +1,21 @@
+{% extends '/base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Accueil
+{% endblock %}
+
+{% block body %}
+    <h2>La liste des sorties sera ici</h2>
+
+    <h3>Test sans mise en forme :</h3>
+    <ul>
+    {% for sortie in sorties %}
+        <li>
+        {{ sortie.nom }}
+        {{ sortie.dateHeureDebut | date('d/m/y') }}
+        {{ sortie.dateLimiteInscription | date('d/m/y')  }}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+
