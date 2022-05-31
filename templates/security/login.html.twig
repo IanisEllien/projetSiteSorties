@@ -15,12 +15,28 @@
         </div>
     {% endif %}
 
+    <table>
+        <tr>
+            <td><label for="inputEmail">Identifiant : </label></td>
+            <td><input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus></td>
+        </tr>
+        <tr>
+            <td><label for="inputPassword">Mot de passe : </label></td>
+            <td><input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required></td>
+        </tr>
 
-    <label for="inputEmail">Identifiant: </label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Mot de passe: </label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+        <tr>
+            <td><button class="btn btn-lg btn-primary" type="submit">
+                    Connexion
+                </button></td>
+            <td><div class="checkbox mb-3">
 
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                    </label>
+                </div></td>
+        </tr>
+    </table>
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
@@ -29,15 +45,9 @@
 
     {# See https://symfony.com/doc/current/security/remember_me.html  #}
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Se souvenir de moi
-            </label>
-        </div>
 
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Connexion
-    </button>
+
+
 </form>
 {% endblock %}

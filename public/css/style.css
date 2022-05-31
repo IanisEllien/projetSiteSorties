@@ -1,0 +1,93 @@
+body{
+  background: linear-gradient(270deg, #b745cd, #1b6ded, #41c5a7);
+  background-size: 600% 600%;
+
+  -webkit-animation: AnimationName 30s ease infinite;
+  -moz-animation: AnimationName 30s ease infinite;
+  -o-animation: AnimationName 30s ease infinite;
+  animation: AnimationName 30s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@-moz-keyframes AnimationName {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@-o-keyframes AnimationName {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+main {
+  max-width: 70%;
+  margin: auto;
+  color:whitesmoke;
+  padding:20px;
+}
+
+.navbar-brand{
+  font-family: 'Tangerine', cursive;
+  font-size: 3em;
+}
+
+h1, h2, h3{
+  font-family: 'Tangerine', cursive;
+}
+
+input,
+textarea,
+select{
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+
+}
+
+
+.inscription{
+  text-align: center;
+  width: 70%;
+  margin: auto;
+}
+
+.btn {
+  color:#1b6ded;
+  background-color: whitesmoke;
+}
+
+.btn:hover{
+  color:#b745cd;
+  background-color: whitesmoke;
+}
+
+#navbarSupportedContent ul li a:hover{
+  color:lightgray;
+}
+
+.inscription label{
+  text-align: left;
+  float:left;
+  width: 30%;
+}
+
+.inscription input {
+  width:70%;
+}
+
+.inscription select{
+  width:50%
+}
+
+main table {
+  margin:auto;
+}

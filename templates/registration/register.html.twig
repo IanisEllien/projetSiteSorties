@@ -3,8 +3,9 @@
 {% block title %}Inscription | {{ parent() }}{% endblock %}
 
 {% block body %}
-    <h1>Inscription</h1>
 
+    <div class="inscription">
+        <h1>Inscription</h1>
     {{ form_start(registrationForm) }}
 
     {{ form_widget(registrationForm) }}
@@ -12,4 +13,5 @@
         <button type="submit" class="btn">Enregistrer</button>
         <a href="{{ path('sorties_liste') }}" class="btn">Annuler</a>
     {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}
