@@ -52,17 +52,19 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $pseudo;
 
     /**
-     * @Assert\NotNull(message="Veuillez renseigner votre nom")
+     * @Assert\NotBlank(message="Veuillez renseigner votre nom")
+     * @Assert\Length(min=2, max=50,
+     *     minMessage="Le nom doit faire au moins 2 caractères",
+     *     maxMessage="Le nom ne peut pas faire plus de 50 caractères")
      * @ORM\Column(type="string", length=50, unique=true)
      */
     private $nom;
 
     /**
-     * @Assert\NotNull(message="Veuillez renseigner votre prenom")
      * @Assert\NotBlank(message="Veuillez renseigner votre prenom")
-     * @Assert\Length(min=2, max=180,
-     *     minMessage="Le nom doit faire au moins 2 caractères",
-     *     maxMessage="Le nom ne peut pas faire plus de 50 caractères")
+     * @Assert\Length(min=2, max=50,
+     *     minMessage="Le prénom doit faire au moins 2 caractères",
+     *     maxMessage="Le prénom ne peut pas faire plus de 50 caractères")
      * @ORM\Column(type="string", length=50)
      */
     private $prenom;
@@ -70,6 +72,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Veuillez renseigner votre numéro de téléphone")
+     */
+    /* Annotation Regex qui ne fonctionne pas (tous les numéros saisis sont erronés)
+     * @Assert\Regex(
+     *     pattern="/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/",
+     *     message="Veuillez indiquer un numéro de téléphone valide"
+     * )
      */
     private $telephone;
 

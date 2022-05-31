@@ -26,7 +26,7 @@ class RegistrationFormType extends AbstractType
             ->add('pseudo',TextType::class)
             ->add('prenom', TextType::class)
             ->add('nom', TextType::class)
-            ->add('telephone', TelType::class)
+            ->add('telephone', TextType::class)
             ->add('email', EmailType::class)
 
             ->add('plainPassword', RepeatedType::class, [
