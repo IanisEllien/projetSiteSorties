@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Data\FiltreSortie;
+use App\Form\FiltreSortieType;
 use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,8 +15,16 @@ class SortiesController extends AbstractController
     /**
      * @Route("/accueil", name="sorties_liste")
      */
-    public function liste(SortieRepository $repository): Response
+    public function liste(SortieRepository $repository, Request $request): Response
     {
+        $filtres = new FiltreSortie();
+        $form = $this->createForm(FiltreSortieType::class, $filtres);
+
+        $form->handleRequest($request);
+
+        $sorties = $repository->findAvecFiltres($filtres);
+
+/*
         //On instancie une date à N-1 mois
         $date = new \DateTime('now-1month');
         dump($date);
@@ -21,10 +32,11 @@ class SortiesController extends AbstractController
         //Puis, on affiche toutes les sorties supérieures ou égales à cette date
         $sorties = $repository->listeSortiesMoinsUnMois($date);
 
-        dump($sorties);
+        dump($sorties);*/
 
         return $this->render('sorties/listeSorties.html.twig', [
             'sorties' => $sorties,
+            'form' => $form->createView()
         ]);
     }
 

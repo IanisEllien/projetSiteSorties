@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Data\FiltreSortie;
 use App\Entity\Sortie;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -42,24 +45,56 @@ class SortieRepository extends ServiceEntityRepository
    /**
 //     * @return Sortie[] Returns an array of Sortie objects
 //     */
-   public function listeSortiesMoinsUnMois($date): array
+   public function listeSortiesMoinsUnMois($date)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.dateHeureDebut >= :val')
-            ->setParameter('val', $date)
-            ->orderBy('s.dateHeureDebut', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->andWhere('s.dateHeureDebut >= :val');
+        $queryBuilder->setParameter('val', $date);
+        $queryBuilder->orderBy('s.dateHeureDebut', 'ASC');
+        $query = $queryBuilder->getQuery();
+        $query->getResult();
+
+        $paginator = new Paginator($query);
+
+        return $paginator;
     }
 
-//    public function findOneBySomeField($value): ?Sortie
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findAvecFiltres(FiltreSortie $filtres)
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+
+        if (!empty($filtres->campus))
+        {
+            $queryBuilder->andWhere('s.campus IN (:c)')
+                         ->setParameter('c', $filtres->campus);
+        }
+
+        if (!empty($filtres->q))
+        {
+            $queryBuilder->andWhere('s.nom LIKE :q')
+                         ->setParameter('q', "%{$filtres->q}%");
+        }
+
+        if (!empty($filtres->dateMin))
+        {
+            $queryBuilder->andWhere('s.dateHeureDebut >= :min')
+                ->setParameter('min', $filtres->dateMin);
+        }
+
+        if (!empty($filtres->dateMax))
+        {
+            $queryBuilder->andWhere('s.dateHeureDebut <= :max')
+                ->setParameter('max', $filtres->dateMax);
+        }
+
+        //TODO : rajouter les filtres à cocher
+
+        $query = $queryBuilder->getQuery();
+        $query->getResult();
+
+
+        $paginator = new Paginator($query);
+
+        return $paginator;
+    }
 }

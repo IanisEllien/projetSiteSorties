@@ -180,4 +180,6 @@ class Sortie
 
         return $this;
     }
+
 }
+

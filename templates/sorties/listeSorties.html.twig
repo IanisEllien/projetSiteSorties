@@ -5,17 +5,44 @@
 {% endblock %}
 
 {% block body %}
-    <h2>La liste des sorties sera ici</h2>
+    <h3>Filtrer les sorties</h3>
 
-    <h3>Test sans mise en forme :</h3>
-    <ul>
+    <div class="container">
+        <div class="row">
+            <div>
+                {% include 'sorties/_filtre.html.twig' with {form: form} only %}
+            </div>
+        </div>
+    </div>
+
+    <h3>Liste sans mise en forme :</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrit(s)/places</th>
+                <th>État</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
     {% for sortie in sorties %}
-        <li>
-        {{ sortie.nom }}
-        {{ sortie.dateHeureDebut | date('d/m/y') }}
-        {{ sortie.dateLimiteInscription | date('d/m/y')  }}
-        </li>
+            <tr>
+                <td>{{ sortie.nom }}</td>
+                <td>{{ sortie.dateHeureDebut | date('d/m/y') }}</td>
+                <td>{{ sortie.dateLimiteInscription | date('d/m/y')}}</td>
+                <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
+                <td>à faire</td>
+                <td>à faire</td>
+                <td>à faire</td>
+                <td>à faire</td>
+            </tr>
     {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 {% endblock %}
 
