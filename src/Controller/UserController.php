@@ -6,11 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/profil", name="user_")
+ */
 class UserController extends AbstractController
 {
 
     /**
-     * @Route("/monProfil", name="user_modifier")
+     * @Route("/modifier", name="modifier")
      */
     public function modifier(): Response
     {
@@ -20,7 +23,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/profil/{id}", requirements={"id"="\d+"}, name="user_afficher")
+     * @Route("/{id}", requirements={"id"="\d+"}, name="afficher")
      */
     public function afficher(): Response
     {
