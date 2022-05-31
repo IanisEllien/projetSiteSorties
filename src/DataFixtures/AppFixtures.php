@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Campus;
+use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -67,6 +68,32 @@ class AppFixtures extends Fixture
         $participant->setCampus($campus);
         $manager->persist($participant);
 
+        // Etats
+
+        $etat = new Etat();
+        $etat->setLibelle('Créée');
+        $manager->persist($etat);
+
+        $etat = new Etat();
+        $etat->setLibelle('Clôturée');
+        $manager->persist($etat);
+
+        $etat = new Etat();
+        $etat->setLibelle('Activité en cours');
+        $manager->persist($etat);
+
+        $etat = new Etat();
+        $etat->setLibelle('Passée');
+        $manager->persist($etat);
+
+        $etat = new Etat();
+        $etat->setLibelle('Annulée');
+        $manager->persist($etat);
+
+        $etat = new Etat();
+        $etat->setLibelle('Ouverte');
+        $manager->persist($etat);
+
         // Sorties
 
         $sortie = new Sortie();
@@ -76,6 +103,8 @@ class AppFixtures extends Fixture
         $sortie->setDuree(90);
         $sortie->setNbInscriptionMax(15);
         $sortie->setCampus($campus);
+        $sortie->setEtat($etat);
+        $sortie->setOrganisateur('organisateur 1');
         $sortie->setInfosSortie('Nous irons au musée Paul Gaugin afin d\'apprécier les oeuvres d\'art de ce grand peintre.');
         $manager->persist($sortie);
 
@@ -86,6 +115,8 @@ class AppFixtures extends Fixture
         $sortie->setDuree(120);
         $sortie->setNbInscriptionMax(10);
         $sortie->setCampus($campus);
+        $sortie->setEtat($etat);
+        $sortie->setOrganisateur('organisateur 2');
         $sortie->setInfosSortie('Profitons de ce solstice d\'été afin de se réunir autour d\'une bonne pizza chez Giovanni');
         $manager->persist($sortie);
 

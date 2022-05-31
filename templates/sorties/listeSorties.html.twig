@@ -36,9 +36,9 @@
                 <td>{{ sortie.dateHeureDebut | date('d/m/y') }}</td>
                 <td>{{ sortie.dateLimiteInscription | date('d/m/y')}}</td>
                 <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
+                <td>{{ sortie.etat.libelle}}</td>
                 <td>à faire</td>
-                <td>à faire</td>
-                <td>à faire</td>
+                <td>{{ sortie.organisateur}}</td>
                 <td>à faire</td>
             </tr>
     {% endfor %}
