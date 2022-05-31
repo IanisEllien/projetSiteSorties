@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="Cet email est déjà utilisé par un autre compte")
+ * @UniqueEntity("pseudo", message="Ce pseudo est déjà utilisé par un autre compte")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -25,6 +27,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email(message="L'email {{ value }} n'est pas un mail valide")
+     * @Assert\NotBlank(message="Veuillez renseigner votre email")
+     * @Assert\Length(max=180,
+     *     maxMessage="L'email ne peut pas faire plus de 180 caractères")
      */
     private $email;
 
@@ -41,21 +47,29 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Veuillez renseigner votre pseudo")
      */
     private $pseudo;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @Assert\NotNull(message="Veuillez renseigner votre nom")
+     * @ORM\Column(type="string", length=50, unique=true)
      */
     private $nom;
 
     /**
+     * @Assert\NotNull(message="Veuillez renseigner votre prenom")
+     * @Assert\NotBlank(message="Veuillez renseigner votre prenom")
+     * @Assert\Length(min=2, max=180,
+     *     minMessage="Le nom doit faire au moins 2 caractères",
+     *     maxMessage="Le nom ne peut pas faire plus de 50 caractères")
      * @ORM\Column(type="string", length=50)
      */
     private $prenom;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Veuillez renseigner votre numéro de téléphone")
      */
     private $telephone;
 

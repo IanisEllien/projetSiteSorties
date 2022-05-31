@@ -10,10 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/sortie", name="sorties_")
+ */
 class SortiesController extends AbstractController
 {
     /**
-     * @Route("/accueil", name="sorties_liste")
+     * @Route("/accueil", name="liste")
      */
     public function liste(SortieRepository $repository, Request $request): Response
     {
@@ -41,7 +44,7 @@ class SortiesController extends AbstractController
     }
 
     /**
-     * @Route("/creationSortie", name="sorties_creer")
+     * @Route("/creation", name="creer")
      */
     public function creer(): Response
     {
@@ -51,7 +54,7 @@ class SortiesController extends AbstractController
     }
 
     /**
-     * @Route("/sortie/{id}", requirements={"id"="\d+"}, name="sorties_afficher")
+     * @Route("/{id}", requirements={"id"="\d+"}, name="afficher")
      */
     public function afficher(): Response
     {
@@ -61,7 +64,7 @@ class SortiesController extends AbstractController
     }
 
     /**
-     * @Route("/sortie/{id}", requirements={"id"="\d+"}, name="sorties_modifier")
+     * @Route("/{id}", requirements={"id"="\d+"}, name="modifier")
      */
     public function modifier(): Response
     {

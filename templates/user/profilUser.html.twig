@@ -1,12 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ parent() }} | Mon profil / profil "pseudoUtilisateur"
+
+    {{ parent() }} |
+    {% if currentUser %}
+        Mon profil
+    {% else %}
+        profil de {# Créer une variable depuis le contrôleur pour récupérer le pseudo #}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
-    <h2>Un utilisateur pourra modifier son profil ici</h2>
-    <h2>Ou</h2>
-    <h2>Un utilisateur pourra consulter un autre profil ici</h2>
+    {% if currentUser %}
+        <h3>Mon Profil</h3>
+
+    {{ form_start(modificationForm) }}
+
+        {{ form_widget(modificationForm) }}
+        <button formnovalidate>Enregistrer</button>
+
+        {{ form_end(modificationForm) }}
+
+    {% else %}
+        <h2>Un utilisateur pourra consulter un autre profil ici</h2>
+    {% endif %}
 {% endblock %}
 
