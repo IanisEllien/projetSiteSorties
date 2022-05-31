@@ -40,41 +40,30 @@ class AppFixtures extends Fixture
         // Participants
 
         $participant = new Participant();
-        $participant->setPseudo('j.delas');
-        $participant->setNom('Delas');
-        $participant->setPrenom('Jean');
-        $participant->setTelephone('0621542310');
-        $participant->setEmail('jean.delas@yahoo.fr');
+        $participant->setPseudo('JDoe');
+        $participant->setNom('Doe');
+        $participant->setPrenom('John');
+        $participant->setTelephone(null);
+        $participant->setEmail('john@campus-eni.fr');
         $password = $this->hasher->hashPassword($participant,'Pa$$w0rd');
         $participant->setPassword($password);
         $participant->setAdministrateur(false);
+        $participant->setRoles(["ROLE_USER"]);
         $participant->setActif(true);
         $participant->setCampus($campus);
         $manager->persist($participant);
 
         $participant = new Participant();
-        $participant->setPseudo('o.moulin');
-        $participant->setNom('Moulin');
-        $participant->setPrenom('Odile');
-        $participant->setTelephone('0721389212');
-        $participant->setEmail('odile.moulin@gmail.com');
-        $password = $this->hasher->hashPassword($participant,'Azerty123!');
-        $participant->setPassword($password);
-        $participant->setAdministrateur(false);
-        $participant->setActif(true);
-        $participant->setCampus($campus);
-        $manager->persist($participant);
-
-        $participant = new Participant();
-        $participant->setPseudo('admin');
-        $participant->setNom('Admin');
-        $participant->setPrenom('Admin');
+        $participant->setPseudo('ADMIN');
+        $participant->setNom('Min');
+        $participant->setPrenom('AD');
         $participant->setTelephone(null);
-        $participant->setEmail('admin@campus-eni.fr');
-        $password = $this->hasher->hashPassword($participant,'admin0');
+        $participant->setEmail('administrateur@campus-eni.fr');
+        $password = $this->hasher->hashPassword($participant,'Pa$$w0rd');
         $participant->setPassword($password);
         $participant->setAdministrateur(true);
-        $participant->setActif(false);
+        $participant->setRoles(["ROLE_ADMIN"]);
+        $participant->setActif(true);
         $participant->setCampus($campus);
         $manager->persist($participant);
 

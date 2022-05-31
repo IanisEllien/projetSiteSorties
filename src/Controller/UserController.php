@@ -8,15 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/", name="user_login")
-     */
-    public function login(): Response
-    {
-        return $this->render('user/login.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
-    }
 
     /**
      * @Route("/monProfil", name="user_modifier")
