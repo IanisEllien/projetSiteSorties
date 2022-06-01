@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,7 +31,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Email(message="L'email {{ value }} n'est pas un mail valide")
      * @Assert\NotBlank(message="Veuillez renseigner votre email")
      * @Assert\Length(max=180,
-     *     maxMessage="L'email ne peut pas faire plus de 180 caractères")
+     *     maxMessage="L'email ne peut pas faire plus de {{ limit }} caractères")
      */
     private $email;
 
@@ -47,15 +48,17 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank(message="Veuillez renseigner votre pseudo")
+     * @Assert\Length(min=2, max=50,
+     *     minMessage="Le pseudo doit faire au moins {{ limit }} caractères",
+     *     maxMessage="Le pseudo ne peut pas faire plus de {{ limit }} caractères")
      */
     private $pseudo;
 
     /**
      * @Assert\NotBlank(message="Veuillez renseigner votre nom")
      * @Assert\Length(min=2, max=50,
-     *     minMessage="Le nom doit faire au moins 2 caractères",
-     *     maxMessage="Le nom ne peut pas faire plus de 50 caractères")
+     *     minMessage="Le nom doit faire au moins {{ limit }} caractères",
+     *     maxMessage="Le nom ne peut pas faire plus de {{ limit }} caractères")
      * @ORM\Column(type="string", length=50, unique=true)
      */
     private $nom;
@@ -63,8 +66,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @Assert\NotBlank(message="Veuillez renseigner votre prenom")
      * @Assert\Length(min=2, max=50,
-     *     minMessage="Le prénom doit faire au moins 2 caractères",
-     *     maxMessage="Le prénom ne peut pas faire plus de 50 caractères")
+     *     minMessage="Le prénom doit faire au moins {{ limit }} caractères",
+     *     maxMessage="Le prénom ne peut pas faire plus de {{ limit }} caractères")
      * @ORM\Column(type="string", length=50)
      */
     private $prenom;
@@ -72,7 +75,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Veuillez renseigner votre numéro de téléphone")
-     * @Assert\Regex(
+     */
+    /*@Assert\Regex(
      *     pattern="/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/",
      *     message="Veuillez indiquer un numéro de téléphone valide")
      */

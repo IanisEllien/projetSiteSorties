@@ -12,14 +12,17 @@
 
 {% block body %}
     {% if currentUser %}
+        <div class="inscription">
         <h3>Mon Profil</h3>
 
     {{ form_start(modificationForm) }}
 
         {{ form_widget(modificationForm) }}
-        <button formnovalidate>Enregistrer</button>
+        <button formnovalidate class="btn">Enregistrer</button>
+        <a href="{{ path('sorties_liste') }}" class="btn">Annuler</a>
 
         {{ form_end(modificationForm) }}
+        </div>
 
     {% else %}
         <h2>Un utilisateur pourra consulter un autre profil ici</h2>
