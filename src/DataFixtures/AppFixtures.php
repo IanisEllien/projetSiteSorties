@@ -11,6 +11,7 @@ use App\Entity\Ville;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Faker;
 
 
 class AppFixtures extends Fixture
@@ -70,6 +71,7 @@ class AppFixtures extends Fixture
         $participant->setCampus($campus);
         $manager->persist($participant);
 
+
         // Etats
 
         $etat = new Etat();
@@ -98,12 +100,69 @@ class AppFixtures extends Fixture
 
         // Villes
 
-        $ville = New Ville();
-        $ville->setNom('Paris');
-        $ville->setCodePostal(75000);
+        $faker = Faker\Factory::create('fr_FR');
+
+        // Ville qui sera utilisée pour tous les lieux
+        $fakerPostCode = Faker\Provider\Address::postcode();
+        $ville = new Ville();
+        $ville->setNom($faker->city);
+        $ville->setCodePostal($fakerPostCode);
         $manager->persist($ville);
 
+        $villes = Array();
+            for ($i = 0; $i<10; $i++) {
+                $fakerPostCode = Faker\Provider\Address::postcode();
+                $villes[$i] = new Ville();
+                $villes[$i]->setNom($faker->city);
+                $villes[$i]->setCodePostal($fakerPostCode);
+                $manager->persist($villes[$i]);
+            }
+
         // Lieux
+        // Création de 20 participants, lieux et sorties via Faker
+
+        $faker = Faker\Factory::create('fr_FR');
+            $participants = Array();
+            $lieux = Array();
+            $sorties = Array();
+            for ($i = 0; $i<20; $i++){
+                $lieux[$i] = new Lieu();
+                $lieux[$i]->setNom($faker->words(2, true));
+                $lieux[$i]->setRue($faker->streetAddress);
+                $lieux[$i]->setLatitude($faker->latitude);
+                $lieux[$i]->setLongitude($faker->longitude);
+                $lieux[$i]->setVille($ville);
+
+                $manager->persist( $lieux[$i]);
+
+                $participants[$i] = new Participant();
+                $participants[$i]->setPseudo($faker->userName);
+                $participants[$i]->setNom($faker->lastName);
+                $participants[$i]->setPrenom($faker->firstName);
+                $participants[$i]->setTelephone($faker->phoneNumber);
+                $participants[$i]->setEmail($faker->freeEmail);
+                $password = $this->hasher->hashPassword($participants[$i],'Pa$$w0rd');
+                $participants[$i]->setPassword($password);
+                $participants[$i]->setAdministrateur(true);
+                $participants[$i]->setRoles(["ROLE_USER"]);
+                $participants[$i]->setActif(true);
+                $participants[$i]->setCampus($campus);
+                $manager->persist($participants[$i]);
+
+                $sorties[$i] = new Sortie();
+                $sorties[$i]->setNom($faker->sentence());
+                $dateDebut = $faker->dateTimeBetween('- 3 months', '+ 1 month');
+                $sorties[$i]->setDateHeureDebut($dateDebut);
+                $sorties[$i]->setDateLimiteInscription($faker->dateTimeInInterval($dateDebut,'+1 month'));
+                $sorties[$i]->setDuree($faker->randomNumber(3,false));
+                $sorties[$i]->setNbInscriptionMax($faker->randomNumber(2,false));
+                $sorties[$i]->setCampus($campus);
+                $sorties[$i]->setEtat($etat);
+                $sorties[$i]->setOrganisateur($participants[$i]);
+                $sorties[$i]->setLieu($lieux[$i]);
+                $sorties[$i]->setInfosSortie($faker->text());
+                $manager->persist($sorties[$i]);
+            }
 
         $lieu = new Lieu();
         $lieu->setNom('Pizzeria Da Enzo');
