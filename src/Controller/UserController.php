@@ -24,6 +24,7 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $form = $this->createForm(RegistrationFormType::class, $user);
+        dump($user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -35,9 +36,9 @@ class UserController extends AbstractController
                 )
             );
 
-            dump($user);
             $em->persist($user);
             $em->flush();
+            dump($user);
             // do anything else you need here, like send an email
 
             $this->addFlash('success','Vos modifications ont bien été enregistrées');

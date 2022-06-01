@@ -75,8 +75,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Veuillez renseigner votre numéro de téléphone")
-     */
-    /*@Assert\Regex(
+     *@Assert\Regex(
      *     pattern="/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/",
      *     message="Veuillez indiquer un numéro de téléphone valide")
      */
@@ -245,12 +244,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTelephone(): ?int
+    public function getTelephone(): ?string
     {
         return $this->telephone;
     }
 
-    public function setTelephone(?int $telephone): self
+    public function setTelephone(?string $telephone): self
     {
         $this->telephone = $telephone;
 
