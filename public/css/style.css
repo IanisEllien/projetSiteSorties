@@ -1,6 +1,6 @@
 body{
-  background: rgb(183,69,205);
-  background: linear-gradient(90deg, rgba(183,69,205,1) 0%, rgba(27,109,237,1) 50%, rgba(0,212,255,1) 100%);
+  background: rgb(0, 23, 141);
+  background: linear-gradient(90deg, rgb(0, 23, 141) 0%, rgba(27,109,237,1) 50%, rgba(0,212,255,1) 100%);
 }
 
 main {
@@ -40,7 +40,7 @@ select{
 }
 
 .btn:hover{
-  color:#b745cd;
+  color:rgb(0, 23, 141);
   background-color: whitesmoke;
 }
 
