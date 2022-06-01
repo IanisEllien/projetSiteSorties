@@ -1,26 +1,28 @@
 {{ form_start(form) }}
 
     <div class="row">
-        <div>
+        <div class="col-md-4">
             {{ form_row(form.campus) }}
 
             {{ form_row(form.q) }}
 
             <div class="row">
-                <div>
+                <div class="col-md-6">
                     {{ form_row(form.dateMin) }}
                 </div>
-                <div>
+                <div class="col-md-6">
                     {{ form_row(form.dateMax) }}
                 </div>
             </div>
         </div>
 
-        <div>
+        <div class="col-md-4 align-self-md-center">
             {{ form_row(form.typeSortie) }}
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+        <div class="col-md-4 align-self-md-center">
+            <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+        </div>
     </div>
 
 {{ form_end(form) }}
