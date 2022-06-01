@@ -28,17 +28,12 @@ class SortiesController extends AbstractController
 
         $form->handleRequest($request);
 
-        $sorties = $repository->findAvecFiltres($filtres);
-
-/*
-        //On instancie une date à N-1 mois
+        //On instancie une date à N-1 mois + user.pseudo
         $date = new \DateTime('now-1month');
-        dump($date);
+        $user = $this->getUser();
 
-        //Puis, on affiche toutes les sorties supérieures ou égales à cette date
-        $sorties = $repository->listeSortiesMoinsUnMois($date);
+        $sorties = $repository->findAvecFiltres($filtres, $date, $user);
 
-        dump($sorties);*/
 
         return $this->render('sorties/listeSorties.html.twig', [
             'sorties' => $sorties,

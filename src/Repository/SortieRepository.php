@@ -8,6 +8,7 @@ use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Sortie>
@@ -59,9 +60,13 @@ class SortieRepository extends ServiceEntityRepository
         return $paginator;
     }
 
-    public function findAvecFiltres(FiltreSortie $filtres)
+    public function findAvecFiltres(FiltreSortie $filtres, $date, $user)
     {
         $queryBuilder = $this->createQueryBuilder('s');
+
+        $queryBuilder->join('s.organisateur','o');
+        $queryBuilder->andWhere('s.dateHeureDebut >= :val');
+        $queryBuilder->setParameter('val', $date);
 
         if (!empty($filtres->campus))
         {
@@ -87,7 +92,38 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('max', $filtres->dateMax);
         }
 
-        //TODO : rajouter les filtres à cocher
+        if (!empty($filtres->typeSortie))
+        {
+            if (in_array('orga',$filtres->typeSortie))
+            {
+                $queryBuilder->andWhere('o.pseudo = :user')
+                    ->setParameter('user',$user->getPseudo());
+            }
+
+            if (in_array('inscrit',$filtres->typeSortie))
+            {
+                $queryBuilder->join('s.participants','p','WITH','p.pseudo = :user')
+                //$queryBuilder->andWhere('p.pseudo = :user')
+                    ->setParameter('user',$user->getPseudo());
+            }
+
+            if (in_array('noninscrit',$filtres->typeSortie))
+            {
+                $queryBuilder->leftJoin('s.participants','p','WITH','p.pseudo = :user')
+                //$queryBuilder->andWhere('p.pseudo <> :user')
+                    ->setParameter('user',$user->getPseudo());
+            }
+
+            if (in_array('finies', $filtres->typeSortie))
+            {
+                $dateJour = new DateTime();
+                $queryBuilder->andWhere('s.dateLimiteInscription < :dateJour')
+                    ->setParameter('dateJour',$dateJour);
+            }
+
+        }
+
+        $queryBuilder->orderBy('s.dateHeureDebut', 'ASC');
 
         $query = $queryBuilder->getQuery();
         $query->getResult();
