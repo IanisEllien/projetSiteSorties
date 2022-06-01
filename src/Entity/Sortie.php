@@ -61,15 +61,16 @@ class Sortie
     private $participants;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $organisateur;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
     private $etat;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sorties_organisateur")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $organisateur;
 
     public function __construct()
     {
@@ -192,12 +193,12 @@ class Sortie
         return $this;
     }
 
-    public function getOrganisateur(): ?string
+    public function getOrganisateur(): ?Participant
     {
         return $this->organisateur;
     }
 
-    public function setOrganisateur(string $organisateur): self
+    public function setOrganisateur(?Participant $organisateur): self
     {
         $this->organisateur = $organisateur;
 

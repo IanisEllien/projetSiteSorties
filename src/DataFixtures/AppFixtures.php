@@ -104,7 +104,7 @@ class AppFixtures extends Fixture
         $sortie->setNbInscriptionMax(15);
         $sortie->setCampus($campus);
         $sortie->setEtat($etat);
-        $sortie->setOrganisateur('organisateur 1');
+        $sortie->setOrganisateur($participant);
         $sortie->setInfosSortie('Nous irons au musée Paul Gaugin afin d\'apprécier les oeuvres d\'art de ce grand peintre.');
         $manager->persist($sortie);
 
@@ -116,7 +116,7 @@ class AppFixtures extends Fixture
         $sortie->setNbInscriptionMax(10);
         $sortie->setCampus($campus);
         $sortie->setEtat($etat);
-        $sortie->setOrganisateur('organisateur 2');
+        $sortie->setOrganisateur($participant);
         $sortie->setInfosSortie('Profitons de ce solstice d\'été afin de se réunir autour d\'une bonne pizza chez Giovanni');
         $manager->persist($sortie);
 

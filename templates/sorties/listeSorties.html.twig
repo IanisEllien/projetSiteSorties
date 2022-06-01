@@ -8,38 +8,33 @@
     <h3>Filtrer les sorties</h3>
 
     <div class="container">
-        <div class="row">
-            <div>
-                {% include 'sorties/_filtre.html.twig' with {form: form} only %}
-            </div>
-        </div>
+        {% include 'sorties/_filtre.html.twig' with {form: form} only %}
     </div>
 
-    <h3>Liste sans mise en forme :</h3>
-    <table>
+    <table class="container text-center" style="margin-top: 50px">
         <thead>
-            <tr>
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                <th>Clôture</th>
-                <th>Inscrit(s)/places</th>
-                <th>État</th>
-                <th>Inscrit</th>
-                <th>Organisateur</th>
-                <th>Actions</th>
+            <tr class="row">
+                <th class="col-md-2">Nom de la sortie</th>
+                <th class="col-md-1">Date de la sortie</th>
+                <th class="col-md-1">Clôture</th>
+                <th class="col-md-2">Inscrit(s)/places</th>
+                <th class="col-md-1">État</th>
+                <th class="col-md-1">Inscrit</th>
+                <th class="col-md-2">Organisateur</th>
+                <th class="col-md-2">Actions</th>
             </tr>
         </thead>
         <tbody>
     {% for sortie in sorties %}
-            <tr>
-                <td>{{ sortie.nom }}</td>
-                <td>{{ sortie.dateHeureDebut | date('d/m/y') }}</td>
-                <td>{{ sortie.dateLimiteInscription | date('d/m/y')}}</td>
-                <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
-                <td>{{ sortie.etat.libelle}}</td>
-                <td>à faire</td>
-                <td>{{ sortie.organisateur}}</td>
-                <td>à faire</td>
+            <tr class="row">
+                <td class="col-md-2">{{ sortie.nom }}</td>
+                <td class="col-md-1">{{ sortie.dateHeureDebut | date('d/m/y') }}</td>
+                <td class="col-md-1">{{ sortie.dateLimiteInscription | date('d/m/y')}}</td>
+                <td class="col-md-2">{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
+                <td class="col-md-1">{{ sortie.etat.libelle}}</td>
+                <td class="col-md-1">à faire</td>
+                <td class="col-md-2">{{ sortie.organisateur}}</td>
+                <td class="col-md-2">à faire</td>
             </tr>
     {% endfor %}
         </tbody>
