@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+    {{ parent() }} |
+    {% if currentUser %}
+        Mon profil
+    {% else %}
+        profil de {# Créer une variable depuis le contrôleur pour récupérer le pseudo #}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+        <h2>Un utilisateur pourra consulter un autre profil ici</h2>
+    {% if currentUser %}
+        {# Afficher un bouton pour modifier le profil #}
+    {% endif %}
+{% endblock %}
+

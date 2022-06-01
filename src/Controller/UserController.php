@@ -24,7 +24,6 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $form = $this->createForm(ParticipantType::class, $user);
-        dump($user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -38,16 +37,14 @@ class UserController extends AbstractController
 
             $em->persist($user);
             $em->flush();
-            dump($user);
             // do anything else you need here, like send an email
 
             $this->addFlash('success','Vos modifications ont bien été enregistrées');
             return $this->redirectToRoute('sorties_liste');
         }
 
-        return $this->render('user/profilUser.html.twig', [
+        return $this->render('user/modifierProfil.html.twig', [
             "modificationForm"=>$form->createView(),
-            "currentUser"=>true
         ]);
     }
 
@@ -56,8 +53,7 @@ class UserController extends AbstractController
      */
     public function afficher(): Response
     {
-        return $this->render('user/profilUser.html.twig', [
-            "currentUser"=>false
+        return $this->render('user/afficherProfil.html.twig', [
         ]);
     }
 }

@@ -1,17 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-
-    {{ parent() }} |
-    {% if currentUser %}
-        Mon profil
-    {% else %}
-        profil de {# Créer une variable depuis le contrôleur pour récupérer le pseudo #}
-    {% endif %}
+    {{ parent() }} | Mon profil
 {% endblock %}
 
 {% block body %}
-    {% if currentUser %}
+        {# TODO : corriger le style des messages d'erreur #}
+
         <div class="inscription">
         <h3>Mon Profil</h3>
 
@@ -23,9 +18,5 @@
 
         {{ form_end(modificationForm) }}
         </div>
-
-    {% else %}
-        <h2>Un utilisateur pourra consulter un autre profil ici</h2>
-    {% endif %}
 {% endblock %}
 
