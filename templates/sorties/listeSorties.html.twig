@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block body %}
+    {# TODO : styliser les infos pour les positionner correctement #}
+    <div>
+        Date du jour : {{ "now" |date('d/m/y') }}
+        Participant : {{ app.user.pseudo() }}
+    </div>
+
     <h3>Filtrer les sorties</h3>
 
     <div class="container">
@@ -26,16 +32,56 @@
         </thead>
         <tbody>
     {% for sortie in sorties %}
+        {# La condition ci-dessous sert à empêcher l'affichage d'une sortie en cours de création par un autre utilisateur #}
+         {% if not (sortie.organisateur.pseudo is not same as (app.user.pseudo()) and sortie.etat.libelle == "Créée")  %}
             <tr class="row">
                 <td class="col-md-2">{{ sortie.nom }}</td>
                 <td class="col-md-1">{{ sortie.dateHeureDebut | date('d/m/y') }}</td>
                 <td class="col-md-1">{{ sortie.dateLimiteInscription | date('d/m/y')}}</td>
                 <td class="col-md-2">{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
-                <td class="col-md-1">{{ sortie.etat.libelle}}</td>
+                <td class="col-md-1">
+                    {% if sortie.etat.libelle == "Créée"%}
+                        {% set etat = "En création" %}
+                    {% endif %}
+                    {% if sortie.etat.libelle == "Ouverte"%}
+                        {% if sortie.participants|length == sortie.nbInscriptionMax %}
+                            {% set etat = "Fermé" %}
+                        {% else %}
+                            {% set etat = "Ouvert" %}
+                        {% endif %}
+                    {% endif %}
+                    {% if sortie.etat.libelle == "Activité en cours"%}
+                        {% set etat = "En cours" %}
+                    {% endif %}
+                    {% if sortie.etat.libelle == "Passée"%}
+                        {% set etat = "Terminé" %}
+                    {% endif %}
+                    {% if sortie.etat.libelle == "Annulée"%}
+                        {% set etat = "Annulé" %}
+                    {% endif %}
+                    {{ etat }}
+                </td>
                 <td class="col-md-1">à faire</td>
                 <td class="col-md-2">{{ sortie.organisateur.pseudo}}</td>
-                <td class="col-md-2">à faire</td>
+                <td class="col-md-2">
+                        {% if etat == "En création" %}
+                            <a href="#">Modifier </a>
+                            -
+                            <a href=""> Publier</a>
+                        {% else %}
+                            <a href="#">Afficher </a>
+                        {% endif %}
+                        {% if sortie.etat.libelle == "Ouverte" %}
+                            -
+                            {% if sortie.organisateur.pseudo is same as app.user.pseudo() %}
+                                <a href="#">Annuler</a>
+                            {% else %}
+                                <a href="#">S'inscrire</a>
+                            {% endif %}
+                        {% endif %}
+                </td>
             </tr>
+        {% endif %}
     {% endfor %}
         </tbody>
     </table>
