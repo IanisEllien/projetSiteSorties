@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
-use App\Form\RegistrationFormType;
+use App\Form\ParticipantType;
 use App\Security\AppAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
         $user->setRoles(["ROLE_USER"]);
         $user->setAdministrateur(false);
         $user->setActif(true);
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(ParticipantType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\RegistrationFormType;
+use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +23,7 @@ class UserController extends AbstractController
     public function modifier(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $em, ParticipantRepository $repo): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(ParticipantType::class, $user);
         dump($user);
         $form->handleRequest($request);
 
