@@ -72,13 +72,11 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Veuillez renseigner votre numéro de téléphone")
-     */
-    /* Annotation Regex qui ne fonctionne pas (tous les numéros saisis sont erronés)
      * @Assert\Regex(
      *     pattern="/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/",
-     *     message="Veuillez indiquer un numéro de téléphone valide"
-     * )
+     *     message="Veuillez indiquer un numéro de téléphone valide")
      */
+
     private $telephone;
 
     /**

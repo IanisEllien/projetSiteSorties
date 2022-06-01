@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
         $participant->setPseudo('JDoe');
         $participant->setNom('Doe');
         $participant->setPrenom('John');
-        $participant->setTelephone(null);
+        $participant->setTelephone('0621524210');
         $participant->setEmail('john@campus-eni.fr');
         $password = $this->hasher->hashPassword($participant,'Pa$$w0rd');
         $participant->setPassword($password);
@@ -58,7 +58,7 @@ class AppFixtures extends Fixture
         $participant->setPseudo('ADMIN');
         $participant->setNom('Min');
         $participant->setPrenom('AD');
-        $participant->setTelephone(null);
+        $participant->setTelephone('0754896234');
         $participant->setEmail('administrateur@campus-eni.fr');
         $password = $this->hasher->hashPassword($participant,'Pa$$w0rd');
         $participant->setPassword($password);
