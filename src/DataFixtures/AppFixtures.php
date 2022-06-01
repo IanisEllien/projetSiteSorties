@@ -4,8 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\Campus;
 use App\Entity\Etat;
+use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -94,6 +96,23 @@ class AppFixtures extends Fixture
         $etat->setLibelle('Ouverte');
         $manager->persist($etat);
 
+        // Villes
+
+        $ville = New Ville();
+        $ville->setNom('Paris');
+        $ville->setCodePostal(75000);
+        $manager->persist($ville);
+
+        // Lieux
+
+        $lieu = new Lieu();
+        $lieu->setNom('Pizzeria Da Enzo');
+        $lieu->setRue('80 rue Saint Charles');
+        $lieu->setLatitude(48.8473024);
+        $lieu->setLongitude(2.2859873);
+        $lieu->setVille($ville);
+        $manager->persist($lieu);
+
         // Sorties
 
         $sortie = new Sortie();
@@ -105,6 +124,7 @@ class AppFixtures extends Fixture
         $sortie->setCampus($campus);
         $sortie->setEtat($etat);
         $sortie->setOrganisateur($participant);
+        $sortie->setLieu($lieu);
         $sortie->setInfosSortie('Nous irons au musée Paul Gaugin afin d\'apprécier les oeuvres d\'art de ce grand peintre.');
         $manager->persist($sortie);
 
@@ -117,6 +137,7 @@ class AppFixtures extends Fixture
         $sortie->setCampus($campus);
         $sortie->setEtat($etat);
         $sortie->setOrganisateur($participant);
+        $sortie->setLieu($lieu);
         $sortie->setInfosSortie('Profitons de ce solstice d\'été afin de se réunir autour d\'une bonne pizza chez Giovanni');
         $manager->persist($sortie);
 
