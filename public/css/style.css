@@ -4,10 +4,10 @@ body{
 }
 
 main {
-  max-width: 70%;
+  max-width: 100%;
   margin: auto;
   color:whitesmoke;
-  padding:20px;
+  padding: 20px 5%;
 }
 
 .navbar-brand{
@@ -17,6 +17,10 @@ main {
 
 h1, h2, h3{
   font-family: 'Tangerine', cursive;
+}
+
+p{
+  margin: 0px;
 }
 
 input,
@@ -30,7 +34,7 @@ select{
 
 .inscription{
   text-align: center;
-  width: 70%;
+  width: 50%;
   margin: auto;
 }
 
@@ -72,4 +76,11 @@ main table {
 
 table td{
   padding-right:20px;
+}
+
+.infoLog{
+  float: right;
+  display: block;
+  font-weight: bold;
+  font-size: large;
 }

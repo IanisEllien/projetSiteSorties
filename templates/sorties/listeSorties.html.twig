@@ -6,12 +6,12 @@
 
 {% block body %}
     {# TODO : styliser les infos pour les positionner correctement #}
-    <div>
-        Date du jour : {{ "now" |date('d/m/y') }}
-        Participant : {{ app.user.pseudo() }}
+    <div class="infoLog">
+        <p>Date du jour : {{ "now" |date('d/m/o') }}</p>
+        <p>Participant : {{ app.user.pseudo() }}</p>
     </div>
 
-    <h3>Filtrer les sorties</h3>
+    <h1>Filtrer les sorties</h1>
 
     <div class="container">
         {% include 'sorties/_filtre.html.twig' with {form: form} only %}
@@ -21,29 +21,31 @@
         <thead>
             <tr class="row">
                 <th class="col-md-2">Nom de la sortie</th>
-                <th class="col-md-1">Date de la sortie</th>
+                <th class="col-md-2">Date de la sortie</th>
                 <th class="col-md-1">Clôture</th>
                 <th class="col-md-2">Inscrit(s)/places</th>
                 <th class="col-md-1">État</th>
                 <th class="col-md-1">Inscrit</th>
-                <th class="col-md-2">Organisateur</th>
+                <th class="col-md-1">Organisateur</th>
                 <th class="col-md-2">Actions</th>
             </tr>
         </thead>
         <tbody>
     {% for sortie in sorties %}
+        {% set today = "now" %}
         {# La condition ci-dessous sert à empêcher l'affichage d'une sortie en cours de création par un autre utilisateur #}
          {% if not (sortie.organisateur.pseudo is not same as (app.user.pseudo()) and sortie.etat.libelle == "Créée")  %}
             <tr class="row">
                 <td class="col-md-2">{{ sortie.nom }}</td>
-                <td class="col-md-1">{{ sortie.dateHeureDebut | date('d/m/y') }}</td>
-                <td class="col-md-1">{{ sortie.dateLimiteInscription | date('d/m/y')}}</td>
+                <td class="col-md-2">{{ sortie.dateHeureDebut | date('d/m/o H\\Hi' ) }}</td>
+                <td class="col-md-1">{{ sortie.dateLimiteInscription | date('d/m/o')}}</td>
                 <td class="col-md-2">{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
                 <td class="col-md-1">
                     {% if sortie.etat.libelle == "Créée"%}
                         {% set etat = "En création" %}
                     {% endif %}
                     {% if sortie.etat.libelle == "Ouverte"%}
+                        {# TODO : gérer le statut fermé lorsque la date de clôture est dépassée (ajouter dateDiff dans le SortiesController #}
                         {% if sortie.participants|length == sortie.nbInscriptionMax %}
                             {% set etat = "Fermé" %}
                         {% else %}
@@ -62,7 +64,7 @@
                     {{ etat }}
                 </td>
                 <td class="col-md-1">à faire</td>
-                <td class="col-md-2">{{ sortie.organisateur.pseudo}}</td>
+                <td class="col-md-1">{{ sortie.organisateur.pseudo}}</td>
                 <td class="col-md-2">
                         {% if etat == "En création" %}
                             <a href="#">Modifier </a>
@@ -71,7 +73,7 @@
                         {% else %}
                             <a href="#">Afficher </a>
                         {% endif %}
-                        {% if sortie.etat.libelle == "Ouverte" %}
+                        {% if etat == "Ouvert" %}
                             -
                             {% if sortie.organisateur.pseudo is same as app.user.pseudo() %}
                                 <a href="#">Annuler</a>
@@ -79,6 +81,12 @@
                                 <a href="#">S'inscrire</a>
                             {% endif %}
                         {% endif %}
+                    {% if etat == "Fermé" %}
+                        {% if sortie.organisateur.pseudo is same as app.user.pseudo() %}
+                            -
+                            <a href="#">Annuler</a>
+                        {% endif %}
+                    {% endif %}
                 </td>
             </tr>
         {% endif %}

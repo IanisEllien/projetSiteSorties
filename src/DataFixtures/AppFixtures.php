@@ -86,9 +86,9 @@ class AppFixtures extends Fixture
         $etat->setLibelle('Activité en cours');
         $manager->persist($etat);
 
-        $etat = new Etat();
+        /*$etat = new Etat();
         $etat->setLibelle('Passée');
-        $manager->persist($etat);
+        $manager->persist($etat);*/
 
         $etat = new Etat();
         $etat->setLibelle('Annulée');
@@ -125,6 +125,8 @@ class AppFixtures extends Fixture
             $participants = Array();
             $lieux = Array();
             $sorties = Array();
+            $etats = Array();
+            $today = new \DateTime();
             for ($i = 0; $i<20; $i++){
                 $lieux[$i] = new Lieu();
                 $lieux[$i]->setNom($faker->words(2, true));
@@ -153,11 +155,26 @@ class AppFixtures extends Fixture
                 $sorties[$i]->setNom($faker->sentence());
                 $dateDebut = $faker->dateTimeBetween('- 3 months', '+ 1 month');
                 $sorties[$i]->setDateHeureDebut($dateDebut);
-                $sorties[$i]->setDateLimiteInscription($faker->dateTimeInInterval($dateDebut,'+1 month'));
+                $sorties[$i]->setDateLimiteInscription($faker->dateTimeInInterval($dateDebut,'-1 week'));
                 $sorties[$i]->setDuree($faker->randomNumber(3,false));
                 $sorties[$i]->setNbInscriptionMax($faker->randomNumber(2,false));
                 $sorties[$i]->setCampus($campus);
-                $sorties[$i]->setEtat($etat);
+                    if ($dateDebut < $today){
+                        $etats[$i] = new Etat();
+                        $etats[$i]->setLibelle('Passée');
+                        $manager->persist($etats[$i]);
+                        $sorties[$i]->setEtat($etats[$i]);
+                    } elseif ($dateDebut->format('d/m/y') === $today->format('d/m/y')){
+                        $etats[$i] = new Etat();
+                        $etats[$i]->setLibelle('Activité en cours');
+                        $manager->persist($etats[$i]);
+                        $sorties[$i]->setEtat($etats[$i]);
+                    } else {
+                        $etats[$i] = new Etat();
+                        $etats[$i]->setLibelle('Ouverte');
+                        $manager->persist($etats[$i]);
+                        $sorties[$i]->setEtat($etats[$i]);
+                    }
                 $sorties[$i]->setOrganisateur($participants[$i]);
                 $sorties[$i]->setLieu($lieux[$i]);
                 $sorties[$i]->setInfosSortie($faker->text());
@@ -192,8 +209,24 @@ class AppFixtures extends Fixture
         $sortie->setDateHeureDebut(new \DateTime('2022-06-21 20:00:00'));
         $sortie->setDateLimiteInscription(new \DateTime('2022-06-14 17:00:00'));
         $sortie->setDuree(120);
-        $sortie->setNbInscriptionMax(10);
+        $sortie->setNbInscriptionMax(0);
         $sortie->setCampus($campus);
+        $sortie->setEtat($etat);
+        $sortie->setOrganisateur($participant);
+        $sortie->setLieu($lieu);
+        $sortie->setInfosSortie('Profitons de ce solstice d\'été afin de se réunir autour d\'une bonne pizza chez Giovanni');
+        $manager->persist($sortie);
+
+        $sortie = new Sortie();
+        $sortie->setNom('Test : sortie en cours de création');
+        $sortie->setDateHeureDebut(new \DateTime('2022-06-21 20:00:00'));
+        $sortie->setDateLimiteInscription(new \DateTime('2022-06-14 17:00:00'));
+        $sortie->setDuree(120);
+        $sortie->setNbInscriptionMax(5);
+        $sortie->setCampus($campus);
+            $etat = new Etat();
+            $etat->setLibelle('Créée');
+            $manager->persist($etat);
         $sortie->setEtat($etat);
         $sortie->setOrganisateur($participant);
         $sortie->setLieu($lieu);
