@@ -89,3 +89,19 @@ table td{
   margin-top: 50px;
   font-family: 'Tangerine', cursive;
 }
+
+#sortie_enregistrerSortie{
+  margin-right: 10px;
+}
+
+#sortie_publierSortie{
+  margin-right: 10px;
+}
+
+#btnForm .form-group{
+  display: contents;
+}
+
+#divBtnForm{
+  text-align: center;
+}

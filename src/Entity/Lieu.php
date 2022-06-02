@@ -6,6 +6,7 @@ use App\Repository\LieuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LieuRepository::class)
@@ -20,21 +21,25 @@ class Lieu
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Veuillez renseigner un nom")
      * @ORM\Column(type="string", length=50)
      */
     private $nom;
 
     /**
+     * @Assert\NotBlank(message="Veuillez renseigner une rue")
      * @ORM\Column(type="string", length=60)
      */
     private $rue;
 
     /**
+     * @Assert\NotBlank(message="Veuillez renseigner une latitude")
      * @ORM\Column(type="float")
      */
     private $latitude;
 
     /**
+     * @Assert\NotBlank(message="Veuillez renseigner une longitude")
      * @ORM\Column(type="float")
      */
     private $longitude;
@@ -148,5 +153,10 @@ class Lieu
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getNom();
     }
 }

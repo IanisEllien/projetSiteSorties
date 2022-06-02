@@ -5,6 +5,71 @@
 {% endblock %}
 
 {% block body %}
-    Un utilisateur pourra créer une sortie ici
+    <h3>Créer une sortie</h3>
+    {{ form_start(sortieForm) }}
+
+    <table>
+        <tr>
+            <td><label>Nom de la sortie:</label></td>
+            <td>{{ form_row(sortieForm.nom) }}</td>
+            <td>Campus:</td>
+            <td>{{ app.user.campus }}</td>
+        </tr>
+        <tr>
+            <td><label>Date et heure de la sortie:</label></td>
+            <td>{{ form_row(sortieForm.dateHeureDebut) }}</td>
+            <td><label>Ville:</label></td>
+            <td>{{ form_row(sortieForm.lieu.ville) }}</td>
+        </tr>
+        <tr>
+            <td><label>Date limite d'inscription:</label></td>
+            <td>{{ form_row(sortieForm.dateLimiteInscription) }}</td>
+            <td><label>Lieu:</label></td>
+            <td>{{ form_row(sortieForm.lieu.nom, {'attr': {'list': 'listeLieux'}}) }}
+                <datalist id="listeLieux">
+                    {% for lieu in lieux %}
+                    <option value="{{ lieu }}">
+                        {% endfor %}
+                </datalist>
+            </td>
+            <td><button type="submit" class="btn">+</button></td>
+        </tr>
+        <tr>
+            <td><label>Nombre de places:</label></td>
+            <td>{{ form_row(sortieForm.nbInscriptionMax) }}</td>
+            <td><label>Rue:</label></td>
+            <td>
+                {{ form_row(sortieForm.lieu.rue) }}
+            </td>
+        </tr>
+        <tr>
+            <td><label>Durée:</label></td>
+            <td>{{ form_row(sortieForm.duree,
+                    {'attr': {'style': 'width:60px;float:left'}},
+                    {'attr': {'type': 'number'}}
+                ) }}minutes</td>
+            <td><label>Latitude:</label></td>
+            <td>{{ form_row(sortieForm.lieu.latitude) }}</td>
+        </tr>
+        <tr>
+            <td><label>Description et infos:</label></td>
+            <td>{{ form_row(sortieForm.infosSortie) }}</td>
+            <td><label>Longitude:</label></td>
+            <td>{{ form_row(sortieForm.lieu.longitude) }}</td>
+        </tr>
+        <tr>
+            <td colspan="4" id="btnForm">
+                <div id="divBtnForm">
+                {{ form_row(sortieForm.enregistrerSortie) }}
+            {{ form_row(sortieForm.publierSortie) }}
+               <a href="{{ path('sorties_liste') }}" class="btn">Annuler</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+
+    {{ form_end(sortieForm) }}
+
 {% endblock %}
 
