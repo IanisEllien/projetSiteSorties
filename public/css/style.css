@@ -84,3 +84,8 @@ table td{
   font-weight: bold;
   font-size: large;
 }
+
+.display-5-custom{
+  margin-top: 50px;
+  font-family: 'Tangerine', cursive;
+}

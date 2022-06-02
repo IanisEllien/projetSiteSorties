@@ -31,6 +31,13 @@
             </tr>
         </thead>
         <tbody>
+        {% if sorties.count() == 0 %}
+        <tr class="row">
+            <td class="col-12">
+                <div class="display-5 display-5-custom">Aucune sortie à afficher</div>
+            </td>
+        </tr>
+        {% endif %}
     {% for sortie in sorties %}
         {% set today = "now" %}
         {# La condition ci-dessous sert à empêcher l'affichage d'une sortie en cours de création par un autre utilisateur #}
@@ -63,7 +70,15 @@
                     {% endif %}
                     {{ etat }}
                 </td>
-                <td class="col-md-1">à faire</td>
+                <td class="col-md-1">
+                    {% set inscrit = false %}
+                    {% for participant in sortie.participants %}
+                        {% if participant.pseudo is same as app.user.pseudo %}
+                            {% set inscrit = true %}
+                            X
+                    {% endif %}
+                    {% endfor %}
+                </td>
                 <td class="col-md-1">{{ sortie.organisateur.pseudo}}</td>
                 <td class="col-md-2">
                         {% if etat == "En création" %}
@@ -77,8 +92,10 @@
                             -
                             {% if sortie.organisateur.pseudo is same as app.user.pseudo() %}
                                 <a href="#">Annuler</a>
+                            {% elseif inscrit %}
+                                <a href="#">Se désister</a>
                             {% else %}
-                                <a href="#">S'inscrire</a>
+                                <a href="{{ path('sorties_inscription', {'id': sortie.id}) }}">S'inscrire</a>
                             {% endif %}
                         {% endif %}
                     {% if etat == "Fermé" %}

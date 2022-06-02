@@ -181,7 +181,7 @@ class Sortie
     /**
      * @return Collection<int, Participant>
      */
-    public function getParticipants(): Collection
+    public function getParticipants(): ?Collection
     {
         return $this->participants;
     }
