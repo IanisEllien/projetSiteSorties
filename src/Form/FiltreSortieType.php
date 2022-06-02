@@ -44,12 +44,17 @@ class FiltreSortieType extends AbstractType
             ])
             ->add('typeSortie', ChoiceType::class, [
                 'label' => false,
-                'required' => false,
+                'required' => true,
                 'choices' => [
                     'Sorties dont je suis l\'organisateur/trice' => 'orga' ,
                     'Sorties auxquelles je suis inscrit/e' => 'inscrit',
                     'Sorties auxquelles je ne suis pas inscrit/e' => 'noninscrit',
                     'Sorties passées' => 'finies'
+                ],
+                'choice_attr' => [
+                    'Sorties dont je suis l\'organisateur/trice' => ['checked' => true],
+                    'Sorties auxquelles je suis inscrit/e' => ['checked' => true],
+                    'Sorties auxquelles je ne suis pas inscrit/e' => ['checked' => true]
                 ],
                 'expanded' =>true,
                 'multiple' => true

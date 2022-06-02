@@ -64,70 +64,94 @@ class SortieRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('s');
 
-        $queryBuilder->join('s.organisateur','o');
-        $queryBuilder->andWhere('s.dateHeureDebut >= :val');
-        $queryBuilder->setParameter('val', $date);
-
-        if (!empty($filtres->campus))
-        {
-            $queryBuilder->andWhere('s.campus IN (:c)')
-                         ->setParameter('c', $filtres->campus);
-        }
-
-        if (!empty($filtres->q))
-        {
-            $queryBuilder->andWhere('s.nom LIKE :q')
-                         ->setParameter('q', "%{$filtres->q}%");
-        }
-
-        if (!empty($filtres->dateMin))
-        {
-            $queryBuilder->andWhere('s.dateHeureDebut >= :min')
-                ->setParameter('min', $filtres->dateMin);
-        }
-
-        if (!empty($filtres->dateMax))
-        {
-            $queryBuilder->andWhere('s.dateHeureDebut <= :max')
-                ->setParameter('max', $filtres->dateMax);
-        }
-
         if (!empty($filtres->typeSortie))
         {
+
+            /*if (in_array('inscrit', $filtres->typeSortie) && in_array('noninscrit', $filtres->typeSortie))
+            {
+                $queryBuilder = $queryBuilder
+                    ->join('s.participants','p');
+
+            }*/
+
+            if (in_array('inscrit',$filtres->typeSortie) && !in_array('noninscrit', $filtres->typeSortie))
+            {
+                $queryBuilder = $queryBuilder
+                    ->join('s.participants','p','WITH','p.pseudo = :user')
+                    //->join('s.participants','p')
+                    //->orWhere('p.pseudo = :user')
+                    ->setParameter('user',$user->getPseudo());
+            }
+
+            if (in_array('noninscrit',$filtres->typeSortie) && !in_array('inscrit',$filtres->typeSortie))
+            {
+                $queryBuilder = $queryBuilder
+                    ->leftJoin('s.participants','pa','WITH','pa.pseudo = :user')
+                    //->join('s.participants','pa')
+                    //->andWhere('pa.pseudo != :user')
+                    ->setParameter('user',$user->getPseudo());
+            }
+
             if (in_array('orga',$filtres->typeSortie))
             {
-                $queryBuilder->andWhere('o.pseudo = :user')
+
+                $queryBuilder = $queryBuilder
+                    ->join('s.organisateur', 'o','WITH', 'o.pseudo = :user')
+                    //->join('s.organisateur','o')
+                    //->orWhere('o.pseudo = :user')
                     ->setParameter('user',$user->getPseudo());
             }
 
-            if (in_array('inscrit',$filtres->typeSortie))
-            {
-                $queryBuilder->join('s.participants','p','WITH','p.pseudo = :user')
-                //$queryBuilder->andWhere('p.pseudo = :user')
-                    ->setParameter('user',$user->getPseudo());
-            }
+            //$query = $queryBuilder->getQuery();
+            //$query->getResult();
 
-            if (in_array('noninscrit',$filtres->typeSortie))
-            {
-                $queryBuilder->leftJoin('s.participants','p','WITH','p.pseudo = :user')
-                //$queryBuilder->andWhere('p.pseudo <> :user')
-                    ->setParameter('user',$user->getPseudo());
-            }
-
-            if (in_array('finies', $filtres->typeSortie))
+            if (!in_array('finies', $filtres->typeSortie))
             {
                 $dateJour = new DateTime();
-                $queryBuilder->andWhere('s.dateLimiteInscription < :dateJour')
+                $queryBuilder = $queryBuilder
+                    ->andWhere('s.dateHeureDebut > :dateJour')
                     ->setParameter('dateJour',$dateJour);
             }
 
+
+            if (!empty($filtres->campus))
+            {
+                $queryBuilder->andWhere('s.campus IN (:c)')
+                    ->setParameter('c', $filtres->campus);
+            }
+
+            if (!empty($filtres->q))
+            {
+                $queryBuilder->andWhere('s.nom LIKE :q')
+                    ->setParameter('q', "%{$filtres->q}%");
+            }
+
+            if (!empty($filtres->dateMin))
+            {
+                $queryBuilder->andWhere('s.dateHeureDebut >= :min')
+                    ->setParameter('min', $filtres->dateMin);
+            }
+
+            if (!empty($filtres->dateMax))
+            {
+                $queryBuilder->andWhere('s.dateHeureDebut <= :max')
+                    ->setParameter('max', $filtres->dateMax);
+            }
+
+            $queryBuilder->andWhere('s.dateHeureDebut >= :val')
+                ->setParameter('val', $date);
+            $queryBuilder->orderBy('s.dateHeureDebut', 'ASC');
+
         }
 
-        $queryBuilder->orderBy('s.dateHeureDebut', 'ASC');
+        else
+        {
+            $queryBuilder->andWhere('s.organisateur = :rien')
+                ->setParameter('rien','riendutout');
+        }
 
         $query = $queryBuilder->getQuery();
         $query->getResult();
-
 
         $paginator = new Paginator($query);
 
