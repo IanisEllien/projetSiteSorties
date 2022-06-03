@@ -90,8 +90,32 @@ table td{
   font-family: 'Tangerine', cursive;
 }
 
+.display-custom{
+  font-family: 'Tangerine', cursive;
+}
+
+.table-custom{
+  overflow-y: scroll;
+  height: 350px;
+  width: 100%;
+  color: white;
+}
+
+.table-participants{
+  float : left;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 200px;
+  width: 25%;
+}
+
 .afficherProfil{
   text-align: center;
+}
+
+.affichageSortie{
+  line-height: 3em;
+  text-align: left;
 }
 
 #navbarSupportedContent ul li a:hover{

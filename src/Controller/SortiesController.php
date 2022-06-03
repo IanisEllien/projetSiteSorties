@@ -105,6 +105,7 @@ class SortiesController extends AbstractController
                 $entityManager->persist($sortie);
                 $entityManager->flush();
                 $this->addFlash('success','Sortie ajoutée avec succés !');
+                return $this->redirectToRoute('sorties_liste');
             }
 
 
@@ -195,11 +196,46 @@ class SortiesController extends AbstractController
     /**
      * @Route("/{id}", requirements={"id"="\d+"}, name="afficher")
      */
-    public function afficher(): Response
+    public function afficher(SortieRepository $sortieRepo, $id): Response
     {
-        return $this->render('sorties/sortie.html.twig', [
-            'controller_name' => 'SortiesController',
+        $sortie = $sortieRepo->find($id);
+
+        return $this->render('sorties/affichageSortie.html.twig', [
+            'sortie' => $sortie,
         ]);
+    }
+
+    /**
+     * @Route("/publier/{id}", requirements={"id"="\d+"}, name="publier")
+     */
+    public function publier (EntityManagerInterface $em, SortieRepository $SortieRepo, ParticipantRepository $participantRepo, ServicesSorties $ss, EtatRepository $etatRepo, $id): Response
+    {
+
+        $sortie = $SortieRepo->find($id);
+        $idUser = $this->getUser()->getId();
+        $participant = $participantRepo->find($idUser);
+
+        if ($ss->estOrganisateur($sortie, $participant)) {
+            if ($sortie->getEtat()->getLibelle() == 'Créée') {
+                $etat = $etatRepo->findOneBy(['libelle' => 'Ouverte']);
+                $sortie->setEtat($etat);
+                $em->persist($sortie);
+                $em->flush();
+
+                $this->addFlash('success', 'Votre sortie ' . $sortie->getNom() . ' est désormais publiée, et sera visible par les autres utilisateurs');
+
+                return $this->redirectToRoute('sorties_liste');
+
+            } else {
+                $this->addFlash('warning', 'La sortie ' . $sortie->getNom() . ' a déjà été publiée');
+
+                return $this->redirectToRoute('sorties_liste');
+            }
+        } else {
+            $this->addFlash('danger', 'Vous ne pouvez pas publier la sortie ' . $sortie->getNom() . ' car vous n\'en êtes pas l\'organisateur !');
+
+            return $this->redirectToRoute('sorties_liste');
+        }
     }
 
     /**

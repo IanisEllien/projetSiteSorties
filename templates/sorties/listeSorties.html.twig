@@ -84,9 +84,9 @@
                         {% if etat == "En création" %}
                             <a href="{{ path('sorties_modifier', {'id': sortie.id}) }}">Modifier </a>
                             -
-                            <a href=""> Publier</a>
+                            <a href="{{ path('sorties_publier', {'id': sortie.id}) }}"> Publier</a>
                         {% else %}
-                            <a href="#">Afficher </a>
+                            <a href="{{ path('sorties_afficher', {'id': sortie.id}) }}">Afficher </a>
                         {% endif %}
                         {% if etat == "Ouvert" %}
                             -
