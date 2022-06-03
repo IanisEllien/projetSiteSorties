@@ -39,6 +39,7 @@ class SortiesController extends AbstractController
         $sorties = $repository->findAvecFiltres($filtres, $date, $user);
 
 
+
         return $this->render('sorties/listeSorties.html.twig', [
             'sorties' => $sorties,
             'form' => $form->createView()
@@ -123,16 +124,17 @@ class SortiesController extends AbstractController
         $participant = $participantRepo->find($idUser);
         $sortie = $SortieRepo->find($id);
         $participants = $sortie->getParticipants();
+        $today = new \DateTime();
 
         // Vérification si la sortie est en statut Ouverte, et si elle n'est pas clôturée
-        if (!($sortie->getEtat()->getLibelle()==='Ouverte') || ($ss->estComplete($sortie))){
-            $this->addFlash('danger','Les inscriptions ne sont pas ouvertes pour la sortie'.$sortie->getNom());
+        if (!($sortie->getEtat()->getLibelle()==='Ouverte') || ($ss->estComplete($sortie)) || $sortie->getDateLimiteInscription()<$today){
+            $this->addFlash('danger','Les inscriptions ne sont pas ouvertes pour la sortie'.$sortie->getNom().' organisée par '.$sortie->getOrganisateur()->getPseudo());
             return $this->redirectToRoute('sorties_liste');
         }
 
         // Vérification si le participant n'est pas déjà inscrit
         if ($ss->rechercheParticipant($participant, $participants)){
-            $this->addFlash('warning','Vous êtes déjà inscrit à la sortie '.$sortie->getNom());
+            $this->addFlash('warning','Vous êtes déjà inscrit à la sortie '.$sortie->getNom().' organisée par '.$sortie->getOrganisateur()->getPseudo());
             return $this->redirectToRoute('sorties_liste');
         }
 
@@ -143,12 +145,48 @@ class SortiesController extends AbstractController
             $em->flush();
 
             $this->addFlash('success','Vous êtes bien inscrit à la sortie '.$sortie->getNom().' organisée par '.$sortie->getOrganisateur()->getPseudo());
+        } else {
+            $this->addFlash('warning','Vous ne pouvez pas vous inscrire à une sortie que vous organisez');
+        }
+        return $this->redirectToRoute('sorties_liste');
+
+    }
+
+    /**
+     * @Route("/desistement/{id}", requirements={"id"="\d+"}, name="desistement")
+     */
+    public function desistement(EntityManagerInterface $em, SortieRepository $SortieRepo, ParticipantRepository $participantRepo, ServicesSorties $ss, $id): Response
+    {
+        $idUser = $this->getUser()->getId();
+        $participant = $participantRepo->find($idUser);
+        $sortie = $SortieRepo->find($id);
+        $participants = $sortie->getParticipants();
+
+        //Vérification si la sortie est en statut ouverte, et si le participant est bien inscrit
+        if (!($sortie->getEtat()->getLibelle()==='Ouverte')){
+            $this->addFlash('danger','Il n\'est plus possible de vous désister de la sortie '.$sortie->getNom().' organisée par '.$sortie->getOrganisateur()->getPseudo());
             return $this->redirectToRoute('sorties_liste');
         }
 
-        return $this->render('sorties/sortie.html.twig', [
-            'controller_name' => 'SortiesController',
-        ]);
+        //Vérification si le participant est bien inscrit
+        if (!($ss->rechercheParticipant($participant, $participants))){
+            $this->addFlash('danger','Impossible de vous désister car vous n\'êtes pas inscrit à la sortie  '.$sortie->getNom().' organisée par '.$sortie->getOrganisateur()->getPseudo());
+            return $this->redirectToRoute('sorties_liste');
+        }
+
+        // Vérification si le participant n'est pas l'organisateur
+        if ($ss->estOrganisateur($sortie, $participant)) {
+            $this->addFlash('warning','Vous ne pouvez pas vous inscrire à une sortie que vous organisez');
+            return $this->redirectToRoute('sorties_liste');
+        }
+
+        $sortie->removeParticipant($participant);
+        $em->persist($sortie);
+        $em->flush();
+
+        $this->addFlash('success','Votre désistement pour la sortie '.$sortie->getNom().' organisée par '.$sortie->getOrganisateur()->getPseudo().' a bien été pris en compte');
+
+        return $this->redirectToRoute('sorties_liste');
     }
 
     /**

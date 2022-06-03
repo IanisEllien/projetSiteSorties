@@ -233,6 +233,38 @@ class AppFixtures extends Fixture
         $sortie->setInfosSortie('Profitons de ce solstice d\'été afin de se réunir autour d\'une bonne pizza chez Giovanni');
         $manager->persist($sortie);
 
+        $sortie = new Sortie();
+        $sortie->setNom('Test : clôture dépassée, mais sortie pas encore réalisée');
+        $sortie->setDateHeureDebut(new \DateTime('2022-06-21 20:00:00'));
+        $sortie->setDateLimiteInscription(new \DateTime('2022-06-01 17:00:00'));
+        $sortie->setDuree(120);
+        $sortie->setNbInscriptionMax(1);
+        $sortie->setCampus($campus);
+        $etat = new Etat();
+        $etat->setLibelle('Ouverte');
+        $manager->persist($etat);
+        $sortie->setEtat($etat);
+        $sortie->setOrganisateur($participant);
+        $sortie->setLieu($lieu);
+        $sortie->setInfosSortie('Profitons de ce solstice d\'été afin de se réunir autour d\'une bonne pizza chez Giovanni');
+        $manager->persist($sortie);
+
+        $sortie = new Sortie();
+        $sortie->setNom('Test : sortie pas encore réalisée, clôture non dépassée');
+        $sortie->setDateHeureDebut(new \DateTime('2022-06-21 20:00:00'));
+        $sortie->setDateLimiteInscription(new \DateTime('2022-06-02 17:00:00'));
+        $sortie->setDuree(120);
+        $sortie->setNbInscriptionMax(1);
+        $sortie->setCampus($campus);
+        $etat = new Etat();
+        $etat->setLibelle('Ouverte');
+        $manager->persist($etat);
+        $sortie->setEtat($etat);
+        $sortie->setOrganisateur($participant);
+        $sortie->setLieu($lieu);
+        $sortie->setInfosSortie('Profitons de ce solstice d\'été afin de se réunir autour d\'une bonne pizza chez Giovanni');
+        $manager->persist($sortie);
+
         $manager->flush();
     }
 }
