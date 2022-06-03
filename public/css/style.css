@@ -118,6 +118,11 @@ table td{
   text-align: center;
 }
 
+#td-annulerSortie{
+  margin-bottom : 20px;
+  text-align: start;
+}
+
 #profil{
   text-align: left;
   margin-top: 10px;

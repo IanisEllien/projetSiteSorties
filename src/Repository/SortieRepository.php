@@ -109,9 +109,17 @@ class SortieRepository extends ServiceEntityRepository
             {
                 $dateJour = new DateTime();
                 $queryBuilder = $queryBuilder
-                    ->andWhere('s.dateHeureDebut > :dateJour')
+                    ->andWhere('s.dateHeureDebut >= :dateJour')
                     ->setParameter('dateJour',$dateJour);
             }
+            else
+            {
+                $dateJour = new DateTime();
+                $queryBuilder = $queryBuilder
+                    ->orWhere('s.dateHeureDebut < :dateJour')
+                    ->setParameter('dateJour',$dateJour);
+            }
+
 
 
             if (!empty($filtres->campus))

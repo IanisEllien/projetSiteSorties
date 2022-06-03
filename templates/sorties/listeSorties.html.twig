@@ -11,7 +11,7 @@
         <p>Participant : {{ app.user.pseudo() }}</p>
     </div>
 
-    <h1>Filtrer les sorties</h1>
+    <h1 class="text-center">Filtrer les sorties</h1>
 
     <div class="container">
         {% include 'sorties/_filtre.html.twig' with {form: form} only %}
@@ -90,8 +90,8 @@
                         {% endif %}
                         {% if etat == "Ouvert" %}
                             -
-                            {% if sortie.organisateur.pseudo is same as app.user.pseudo() %}
-                                <a href="#">Annuler</a>
+                            {% if sortie.organisateur.pseudo is same as app.user.pseudo()%}
+                                <a href="{{ path('sorties_annuler', {'id': sortie.id}) }}">Annuler</a>
                             {% elseif inscrit %}
                                 <a href="{{ path('sorties_desistement', {'id': sortie.id}) }}">Se désister</a>
                             {% else %}

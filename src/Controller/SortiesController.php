@@ -36,9 +36,12 @@ class SortiesController extends AbstractController
         $date = new \DateTime('now-1month');
         $user = $this->getUser();
 
+        if (!$form->isSubmitted())
+        {
+            $filtres->typeSortie = ['orga','inscrit','noninscrit'];
+        }
+
         $sorties = $repository->findAvecFiltres($filtres, $date, $user);
-
-
 
         return $this->render('sorties/listeSorties.html.twig', [
             'sorties' => $sorties,
@@ -200,22 +203,40 @@ class SortiesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", requirements={"id"="\d+"}, name="modifier")
+     * @Route("/modifier/{id}", requirements={"id"="\d+"}, name="modifier")
      */
-    public function modifier(): Response
+    public function modifier(int $id, SortieRepository $sortieRepository): Response
     {
-        return $this->render('sorties/sortie.html.twig', [
+        $sortie = $sortieRepository->find($id);
+
+        return $this->render('sorties/sortieModifier.html.twig', [
             'controller_name' => 'SortiesController',
+            'sortie' => $sortie
         ]);
     }
 
     /**
-     * @Route("/sortie/{id}", requirements={"id"="\d+"}, name="sorties_annuler")
+     * @Route("/annuler/{id}", requirements={"id"="\d+"}, name="annuler")
      */
-    public function annuler(): Response
+    public function annuler(int $id, SortieRepository $sortieRepository): Response
     {
-        return $this->render('sorties/sortie.html.twig', [
+         $sortie = $sortieRepository->find($id);
+
+        if(!$sortie)
+        {
+            throw $this->createNotFoundException('La sortie que vous cherchez à annuler n\'existe pas');
+        }
+
+        /*
+        if()
+        {
+
+        }
+        */
+
+        return $this->render('sorties/annulerSortie.html.twig', [
             'controller_name' => 'SortiesController',
+            'sortie' => $sortie
         ]);
     }
 }

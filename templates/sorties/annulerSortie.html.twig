@@ -1,0 +1,48 @@
+{% extends '/base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Annuler une sortie
+{% endblock %}
+
+{% block body %}
+
+    <h2 class="text-center" style="margin-bottom: 50px; margin-top: 50px">Annuler une sortie</h2>
+
+    <div>
+        <table class="container">
+            <tbody class="text-center">
+                <tr class="row justify-content-center">
+                    <td class="col-md-2" id="td-annulerSortie">Nom de la sortie :</td>
+                    <td class="col-md-3" id="td-annulerSortie">{{ sortie.nom }}</td>
+                </tr>
+                <tr class="row justify-content-center">
+                    <td class="col-md-2" id="td-annulerSortie">Date de la sortie :</td>
+                    <td class="col-md-3" id="td-annulerSortie">{{ sortie.dateHeureDebut | date }}</td>
+                </tr>
+                <tr class="row justify-content-center">
+                    <td class="col-md-2" id="td-annulerSortie">Campus :</td>
+                    <td class="col-md-3" id="td-annulerSortie">{{ sortie.campus }}</td>
+                </tr>
+                <tr class="row justify-content-center">
+                    <td class="col-md-2" id="td-annulerSortie">Lieu :</td>
+                    <td class="col-md-3" id="td-annulerSortie">{{ sortie.lieu }}</td>
+                </tr>
+                <tr class="row justify-content-center">
+                    <td class="col-md-2" id="td-annulerSortie">Motif :</td>
+                    <td class="col-md-3" id="td-annulerSortie"><input type="text" class="motifAnnulation" style="min-height: 100px"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-primary w-5"><a href="{{ path('sorties_annuler', {'id':sortie.id}) }}">Enregistrer</a></button>
+        <button class="btn btn-primary w-5"><a href="{{ path('sorties_liste') }}">Annuler</a></button>
+    </div>
+
+
+
+{% endblock %}
+
+
+
