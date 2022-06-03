@@ -73,7 +73,7 @@ class SortiesController extends AbstractController
             }
 
 
-            if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrerSortie') || $sortieForm->getClickedButton() === $sortieForm->get('publierSortie') && $sortieForm->isValid()){
+            if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrerSortie') && $sortieForm->isValid() || $sortieForm->getClickedButton() === $sortieForm->get('publierSortie') && $sortieForm->isValid()){
                 $ancienLieu = $lieuRepository->findOneBy(['nom' => $lieu->getNom(), 'rue' => $lieu->getRue()]);
                 if($ancienLieu){
                     $sortie->setLieu($ancienLieu);
