@@ -34,12 +34,14 @@ class Lieu
 
     /**
      * @Assert\NotBlank(message="Veuillez renseigner une latitude")
+     * @Assert\Regex(pattern="/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/", message="La latitude n'est pas correcte")
      * @ORM\Column(type="float")
      */
     private $latitude;
 
     /**
      * @Assert\NotBlank(message="Veuillez renseigner une longitude")
+     * @Assert\Regex(pattern="/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/", message="La longitude n'est pas correcte")
      * @ORM\Column(type="float")
      */
     private $longitude;
@@ -94,7 +96,7 @@ class Lieu
         return $this->latitude;
     }
 
-    public function setLatitude(float $latitude): self
+    public function setLatitude(?float $latitude): self
     {
         $this->latitude = $latitude;
 

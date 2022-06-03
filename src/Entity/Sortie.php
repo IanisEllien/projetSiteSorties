@@ -49,6 +49,9 @@ class Sortie
 
     /**
      * @Assert\NotBlank(message="Veuillez renseigner un nombre")
+     * @Assert\Regex(pattern="/\d+/", message="Veuillez renseigner un nombre")
+     * @Assert\Type("integer", message="Veuillez renseigner un nombre")
+     * @Assert\Positive(message="La valeur doit être positive")
      * @ORM\Column(type="integer")
      */
     private $nbInscriptionMax;
