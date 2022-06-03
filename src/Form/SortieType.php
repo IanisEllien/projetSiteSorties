@@ -26,12 +26,12 @@ class SortieType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'label' => false,
-                'required' => false
+
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
                 'widget' => 'single_text',
                 'label' => false,
-                'required' => false,
+
                 'data' => new \DateTime()
             ])
 
@@ -48,16 +48,13 @@ class SortieType extends AbstractType
             ->add('dateLimiteInscription', DateTimeType::class, [
                 'widget' => 'single_text',
                 'label' => false,
-                'required' => false,
                 'data' => new \DateTime()
             ])
             ->add('nbInscriptionMax', NumberType::class, [
                 'label' => false,
-                'required' => false
             ])
             ->add('duree', NumberType::class, [
                 'label' => false,
-                'required' => false
             ])
             ->add('infosSortie', TextareaType::class, [
                 'label' => false,

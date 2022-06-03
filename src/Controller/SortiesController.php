@@ -63,53 +63,33 @@ class SortiesController extends AbstractController
         $sortieForm->handleRequest($request);
 
         $lieux = $lieuRepository->findAll();
-        //dd($lieux);
 
-
-        if($sortieForm->isSubmitted()){
+        if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrerSortie') && $sortieForm->isValid() || $sortieForm->getClickedButton() === $sortieForm->get('publierSortie') && $sortieForm->isValid()){
             $lieu = $sortie->getLieu();
             $ancienLieu = $lieuRepository->findOneBy(['nom' => $lieu->getNom(), 'rue' => $lieu->getRue()]);
-
-            if(!$ancienLieu){
+            if($ancienLieu){
+                $sortie->setLieu($ancienLieu);
+            }
+            else{
+                $sortie->setLieu($lieu);
                 $entityManager->persist($lieu);
                 $entityManager->flush();
                 $this->addFlash('success','Lieu ajouté avec succés !');
             }
 
-
-            if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrerSortie') && $sortieForm->isValid() || $sortieForm->getClickedButton() === $sortieForm->get('publierSortie') && $sortieForm->isValid()){
-                $ancienLieu = $lieuRepository->findOneBy(['nom' => $lieu->getNom(), 'rue' => $lieu->getRue()]);
-                if($ancienLieu){
-                    $sortie->setLieu($ancienLieu);
-                }
-                else{
-                    $sortie->setLieu($lieu);
-                    $entityManager->persist($lieu);
-                    $entityManager->flush();
-                    $this->addFlash('success','Lieu ajouté avec succés !');
-                }
-
-                if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrerSortie')){
-                    $etat = $etatRepository->findOneBy(['libelle' => 'Créée']);
-                }
-                else{
-                    $etat = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
-                }
-
-
-                $sortie->setCampus($this->getUser()->getCampus());
-                $sortie->setEtat($etat);
-                $sortie->setOrganisateur($this->getUser());
-                //dd($sortie);
-                //$entityManager->persist($lieu);
-                $entityManager->persist($sortie);
-                $entityManager->flush();
-                $this->addFlash('success','Sortie ajoutée avec succés !');
-                return $this->redirectToRoute('sorties_liste');
+            if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrerSortie')){
+                $etat = $etatRepository->findOneBy(['libelle' => 'Créée']);
+            }
+            else{
+                $etat = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
             }
 
-
-
+            $sortie->setCampus($this->getUser()->getCampus());
+            $sortie->setEtat($etat);
+            $sortie->setOrganisateur($this->getUser());
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+            $this->addFlash('success','Sortie ajoutée avec succés !');
         }
 
         return $this->render('sorties/createSortie.html.twig', [

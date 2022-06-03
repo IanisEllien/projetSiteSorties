@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LieuType extends AbstractType
@@ -20,6 +22,7 @@ class LieuType extends AbstractType
             ->add('nom', TextType::class, [
                 'label' => false,
             ])
+
             ->add('rue', TextType::class, [
                 'label' => false
             ])
@@ -34,11 +37,26 @@ class LieuType extends AbstractType
                 'choice_label' => 'nom',
                 'label' => false
             ])
+
             /*
-            ->add('enregistrerLieu', SubmitType::class, [
-                'label' => '+'
-            ])
+            ->addEventListener(
+                FormEvents::PRE_SUBMIT,
+                function (FormEvent $event) {
+                    $form = $event->getForm();
+
+                    // this would be your entity, i.e. SportMeetup
+                    $data = $event->getData();
+                    dd($form->get("ville"));
+                    $ville = $data->getVille();
+                    if($ville === "Lagarde"){
+                        $form->add('test', TextType::class, [
+                            'label' => 'Test'
+                        ]);
+                    }
+                }
+            )
             */
+
         ;
     }
 
