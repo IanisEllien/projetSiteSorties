@@ -234,25 +234,42 @@ class SortiesController extends AbstractController
     /**
      * @Route("/annuler/{id}", requirements={"id"="\d+"}, name="annuler")
      */
-    public function annuler(int $id, SortieRepository $sortieRepository): Response
+    public function annuler(int $id, SortieRepository $sortieRepository, Request  $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
     {
-         $sortie = $sortieRepository->find($id);
+        $sortie = $sortieRepository->find($id);
+        $description = $sortie->getInfosSortie();
+
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm->handleRequest($request);
 
         if(!$sortie)
         {
             throw $this->createNotFoundException('La sortie que vous cherchez à annuler n\'existe pas');
         }
 
-        /*
-        if()
+        if($sortieForm->isSubmitted() && $sortieForm->isValid())
         {
 
+
+            $motifAnnulation = $sortie->getInfosSortie();
+            $sortie->setInfosSortie($description . "\n ANNULÉE CAR : " . $motifAnnulation);
+            $etat = $etatRepository->findOneBy(['libelle' => 'Annulée']);
+            $sortie->setEtat($etat);
+
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+
+            $this->addFlash('sucess','La sortie a bien été annulée');
+
+            return $this->redirectToRoute('sorties_liste', [
+                'controller_name' => 'SortiesController',
+            ]);
         }
-        */
 
         return $this->render('sorties/annulerSortie.html.twig', [
             'controller_name' => 'SortiesController',
-            'sortie' => $sortie
+            'sortie' => $sortie,
+            'form' => $sortieForm->createView()
         ]);
     }
 }

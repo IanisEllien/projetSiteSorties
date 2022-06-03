@@ -151,5 +151,8 @@ table td{
   text-align: left;
   margin-top: 10px;
   margin-bottom: 10px;
+}
 
+.hidden-row{
+  display: none;
 }

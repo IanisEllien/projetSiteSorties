@@ -8,6 +8,8 @@
 
     <h2 class="text-center" style="margin-bottom: 50px; margin-top: 50px">Annuler une sortie</h2>
 
+    {{ form_start(form) }}
+
     <div>
         <table class="container">
             <tbody class="text-center">
@@ -17,7 +19,7 @@
                 </tr>
                 <tr class="row justify-content-center">
                     <td class="col-md-2" id="td-annulerSortie">Date de la sortie :</td>
-                    <td class="col-md-3" id="td-annulerSortie">{{ sortie.dateHeureDebut | date }}</td>
+                    <td class="col-md-3" id="td-annulerSortie">{{ sortie.dateHeureDebut | date('d/m/Y') }}</td>
                 </tr>
                 <tr class="row justify-content-center">
                     <td class="col-md-2" id="td-annulerSortie">Campus :</td>
@@ -29,14 +31,19 @@
                 </tr>
                 <tr class="row justify-content-center">
                     <td class="col-md-2" id="td-annulerSortie">Motif :</td>
-                    <td class="col-md-3" id="td-annulerSortie"><input type="text" class="motifAnnulation" style="min-height: 100px"></td>
+                    <td class="col-md-3" id="td-annulerSortie">{{ form_widget(form.infosSortie) }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
+    <div class="hidden-row">
+        {{ form_widget(form) }}
+    </div>
+
     <div class="text-center">
-        <button class="btn btn-primary w-5"><a href="{{ path('sorties_annuler', {'id':sortie.id}) }}">Enregistrer</a></button>
+        <button type="submit" class="btn btn-primary w-5">Enregistrer</button>
+        {{ form_end(form) }}
         <button class="btn btn-primary w-5"><a href="{{ path('sorties_liste') }}">Annuler</a></button>
     </div>
 
