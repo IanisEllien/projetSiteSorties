@@ -90,6 +90,10 @@ table td{
   font-family: 'Tangerine', cursive;
 }
 
+.afficherProfil{
+  text-align: center;
+}
+
 #navbarSupportedContent ul li a:hover{
   color:lightgray;
 }
@@ -112,4 +116,11 @@ table td{
 
 #divBtnForm{
   text-align: center;
+}
+
+#profil{
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
 }

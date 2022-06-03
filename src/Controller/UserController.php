@@ -51,9 +51,16 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", requirements={"id"="\d+"}, name="afficher")
      */
-    public function afficher(): Response
+    public function afficher(int $id, ParticipantRepository $participantRepository): Response
     {
+        $participant = $participantRepository->find($id);
+
+        if(!$participant){
+            throw $this->createNotFoundException('Ce profil n\'existe pas !');
+        }
+
         return $this->render('user/afficherProfil.html.twig', [
+            "participant" => $participant
         ]);
     }
 }

@@ -3,17 +3,46 @@
 {% block title %}
 
     {{ parent() }} |
-    {% if currentUser %}
+    {% if app.user == participant %}
         Mon profil
-    {% else %}
-        profil de {# Créer une variable depuis le contrôleur pour récupérer le pseudo #}
+        {% else %}
+            Profil de {{ participant.pseudo }}
     {% endif %}
+
+
 {% endblock %}
 
 {% block body %}
-        <h2>Un utilisateur pourra consulter un autre profil ici</h2>
-    {% if currentUser %}
-        {# Afficher un bouton pour modifier le profil #}
-    {% endif %}
+    <div class="afficherProfil">
+        <h1>{{ participant.pseudo }}</h1>
+        <table id="profil">
+            <tr>
+                <td><label>Prénom:</label></td>
+                <td>{{ participant.prenom }}</td>
+            </tr>
+            <tr>
+                <td><label>Nom:</label></td>
+                <td>{{ participant.nom }}</td>
+            </tr>
+            <tr>
+                <td><label>Téléphone:</label></td>
+                <td>{{ participant.telephone }}</td>
+            </tr>
+            <tr>
+                <td><label>Email:</label></td>
+                <td>{{ participant.email }}</td>
+            </tr>
+            <tr>
+                <td><label>Campus:</label></td>
+                <td>{{ participant.campus }}</td>
+            </tr>
+        </table>
+
+        {% if app.user == participant %}
+            <a href="{{ path('user_modifier') }}" class="btn">Modifier</a>
+        {% endif %}
+
+        <a href="{{ path('sorties_liste') }}" class="btn">Retour</a>
+    </div>
 {% endblock %}
 
