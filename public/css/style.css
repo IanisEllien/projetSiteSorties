@@ -160,3 +160,22 @@ table td{
 .lien{
   text-decoration: none;
 }
+
+@media (max-width: 768px)
+{
+  .smartphone-display{
+    display: none;
+  }
+
+  .smartphone-sorties{
+
+  }
+}
+
+@media (min-width: 768px)
+{
+  .computer-tablet-display{
+    display: none;
+  }
+
+}

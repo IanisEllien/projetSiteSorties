@@ -6,29 +6,32 @@
 
 {% block body %}
     {# TODO : styliser les infos pour les positionner correctement #}
-    <div class="infoLog">
+    <div class="infoLog smartphone-display">
         <p>Date du jour : {{ "now" |date('d/m/o') }}</p>
         <p>Participant : {{ app.user.pseudo() }}</p>
     </div>
 
+    <div class="smartphone-display">
     <h1 class="text-center">Filtrer les sorties</h1>
 
     <div class="container">
         {% include 'sorties/_filtre.html.twig' with {form: form} only %}
+    </div>
     </div>
 
     <div class="table-custom">
     <table class="table table-striped table-hover table-responsive container text-center" style="margin-top: 50px">
         <thead>
             <tr class="row">
-                <th class="col-md-2">Nom de la sortie</th>
-                <th class="col-md-2">Date de la sortie</th>
-                <th class="col-md-1">Clôture</th>
-                <th class="col-md-1">Inscrit(s)/places</th>
-                <th class="col-md-1">État</th>
-                <th class="col-md-1">Inscrit</th>
-                <th class="col-md-2">Organisateur</th>
-                <th class="col-md-2">Actions</th>
+                <th class="col-xs-4 col-md-2 smartphone-sorties">Nom de la sortie</th>
+                <th class="col-xs-4 col-md-2 smartphone-sorties">Date de la sortie</th>
+                <th class="col-md-1 smartphone-display">Clôture</th>
+                <th class="col-md-1 smartphone-display">Inscrit(s)/places</th>
+                <th class="col-md-1 smartphone-display">État</th>
+                <th class="col-md-1 smartphone-display">Inscrit</th>
+                <th class="col-md-2 smartphone-display">Organisateur</th>
+                <th class="col-md-2 smartphone-display">Actions</th>
+                <th class="col-xs-4 computer-tablet-display smartphone-sorties">Lieu</th>
             </tr>
         </thead>
         <tbody>
@@ -44,11 +47,11 @@
         {# La condition ci-dessous sert à empêcher l'affichage d'une sortie en cours de création par un autre utilisateur #}
          {% if not (sortie.organisateur.pseudo is not same as (app.user.pseudo()) and sortie.etat.libelle == "Créée")  %}
             <tr class="row">
-                <td class="col-md-2">{{ sortie.nom }}</td>
-                <td class="col-md-2">{{ sortie.dateHeureDebut | date('d/m/o H\\Hi' ) }}</td>
-                <td class="col-md-1">{{ sortie.dateLimiteInscription | date('d/m/o')}}</td>
-                <td class="col-md-1">{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
-                <td class="col-md-1">
+                <td class="col-xs-4 col-sm-2 smartphone-sorties">{{ sortie.nom }}</td>
+                <td class="col-xs-4 col-sm-2 smartphone-sorties">{{ sortie.dateHeureDebut | date('d/m/o H\\Hi' ) }}</td>
+                <td class="col-sm-1 smartphone-display">{{ sortie.dateLimiteInscription | date('d/m/o')}}</td>
+                <td class="col-md-1 smartphone-display">{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
+                <td class="col-md-1 smartphone-display">
                     {% if sortie.etat.libelle == "Créée"%}
                         {% set etat = "En création" %}
                     {% endif %}
@@ -70,7 +73,7 @@
                     {% endif %}
                     {{ etat }}
                 </td>
-                <td class="col-md-1">
+                <td class="col-md-1 smartphone-display">
                     {% set inscrit = false %}
                     {% for participant in sortie.participants %}
                         {% if participant.pseudo is same as app.user.pseudo %}
@@ -79,8 +82,8 @@
                     {% endif %}
                     {% endfor %}
                 </td>
-                <td class="col-md-2"><a href="{{ path('user_afficher', {"id": sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo}}</a></td>
-                <td class="col-md-2">
+                <td class="col-md-2 smartphone-display"><a href="{{ path('user_afficher', {"id": sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo}}</a></td>
+                <td class="col-md-2 smartphone-display">
                         {% if etat == "En création" %}
                             <a href="{{ path('sorties_modifier', {'id': sortie.id}) }}">Modifier </a>
                             -
@@ -109,13 +112,14 @@
                         {% endif %}
                     {% endif %}
                 </td>
+                <td class="col-xs-4 computer-tablet-display smartphone-sorties">{{ sortie.lieu }}</td>
             </tr>
         {% endif %}
     {% endfor %}
         </tbody>
     </table>
     </div>
-    <a class="btn" href="{{ path('sorties_creer') }}">Créer une sortie</a>
+    <a class="btn smartphone-display" href="{{ path('sorties_creer') }}">Créer une sortie</a>
 {% endblock %}
 
 
