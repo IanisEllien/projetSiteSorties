@@ -7,9 +7,21 @@
 {% block body %}
         {# TODO : corriger le style des messages d'erreur #}
 
-        <div class="inscription">
+        <div class="afficherProfil">
         <h3>Mon Profil</h3>
-
+            {% if participant.photo %}
+                <img class="photoUser"
+                     src="/img/usersAvatars/{{ participant.photo }}"
+                     alt="Photo de {{ participant.pseudo }}">
+            {% else %}
+                <div class="photoUser">
+                    <img
+                            src="{{ asset('img/default/cat.PNG') }}"
+                            alt="Photo de {{ participant.pseudo }}">
+                    <p>Et si vous ajoutiez votre vraie photo?</p>
+                </div>
+            {% endif %}
+    <div class="inscription">
     {{ form_start(modificationForm) }}
 
         {{ form_widget(modificationForm) }}
@@ -17,6 +29,7 @@
         <a href="{{ path('sorties_liste') }}" class="btn">Annuler</a>
 
         {{ form_end(modificationForm) }}
+    </div>
         </div>
 {% endblock %}
 

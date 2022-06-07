@@ -13,8 +13,22 @@
 {% endblock %}
 
 {% block body %}
+
     <div class="afficherProfil">
         <h1>{{ participant.pseudo }}</h1>
+        {% if participant.photo %}
+        <img class="photoUser"
+             src="/img/usersAvatars/{{ participant.photo }}"
+             alt="Photo de {{ participant.pseudo }}">
+            {% else %}
+                <div class="photoUser">
+                <img
+                     src="{{ asset('img/default/cat.PNG') }}"
+                     alt="Photo de {{ participant.pseudo }}">
+                    <p>En attendant que {{ participant.pseudo }} ajoute sa photo !</p>
+                </div>
+        {% endif %}
+
         <table id="profil">
             <tr>
                 <td><label>Prénom:</label></td>

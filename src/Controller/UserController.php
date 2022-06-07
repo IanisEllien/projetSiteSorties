@@ -5,13 +5,14 @@ namespace App\Controller;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/profil", name="user_")
@@ -22,7 +23,7 @@ class UserController extends AbstractController
     /**
      * @Route("/modifier", name="modifier")
      */
-    public function modifier(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $em, ParticipantRepository $repo): Response
+    public function modifier(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $em, ParticipantRepository $repo, SluggerInterface $slugger): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(ParticipantType::class, $user);
@@ -32,15 +33,17 @@ class UserController extends AbstractController
 
             //Gestion de l'image uploadée
             /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $form['photo']->getData();
+            $uploadedFile = $form->get('photo')->getData();
 
             if ($uploadedFile) {
-                $destination = $this->getParameter('kernel.project_dir') . '/public/uploads';
+                $destination = $this->getParameter('kernel.project_dir') . '/public/img/usersAvatars';
                 $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = Urlizer::urlize($originalFilename) . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
-                $uploadedFile->move(
-                    $destination,
-                    $newFilename
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename. '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+
+                    $uploadedFile->move(
+                        $destination,
+                        $newFilename
                 );
                 $user->setPhoto($newFilename);
             }
@@ -63,6 +66,7 @@ class UserController extends AbstractController
 
         return $this->render('user/modifierProfil.html.twig', [
             "modificationForm"=>$form->createView(),
+            "participant"=>$user
         ]);
     }
 
