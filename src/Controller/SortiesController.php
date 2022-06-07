@@ -238,6 +238,8 @@ class SortiesController extends AbstractController
     {
         $sortie = $sortieRepository->find($id);
         $description = $sortie->getInfosSortie();
+        $dateSortie = $sortie->getDateHeureDebut();
+        $dateCloture = $sortie->getDateLimiteInscription();
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
@@ -252,14 +254,18 @@ class SortiesController extends AbstractController
 
 
             $motifAnnulation = $sortie->getInfosSortie();
-            $sortie->setInfosSortie($description . "\n ANNULÉE CAR : " . $motifAnnulation);
+            $sortie->setInfosSortie($description . "\r\n ANNULÉE CAR : " . $motifAnnulation);
             $etat = $etatRepository->findOneBy(['libelle' => 'Annulée']);
             $sortie->setEtat($etat);
+
+            // On remet les dates parce que sinon elles changent
+            $sortie->setDateHeureDebut($dateSortie);
+            $sortie->setDateLimiteInscription($dateCloture);
 
             $entityManager->persist($sortie);
             $entityManager->flush();
 
-            $this->addFlash('sucess','La sortie a bien été annulée');
+            $this->addFlash('success','La sortie a bien été annulée');
 
             return $this->redirectToRoute('sorties_liste', [
                 'controller_name' => 'SortiesController',

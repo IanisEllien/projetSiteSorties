@@ -105,7 +105,7 @@
                             {% endif %}
                         {% if sortie.organisateur.pseudo is same as app.user.pseudo() %}
                             -
-                            <a href="#">Annuler</a>
+                            <a href="{{ path('sorties_annuler', {'id': sortie.id}) }}">Annuler</a>
                         {% endif %}
                     {% endif %}
                 </td>

@@ -31,7 +31,7 @@
                 </tr>
                 <tr class="row justify-content-center">
                     <td class="col-md-2" id="td-annulerSortie">Motif :</td>
-                    <td class="col-md-3" id="td-annulerSortie">{{ form_widget(form.infosSortie) }}</td>
+                    <td class="col-md-3" id="td-annulerSortie">{{ form_widget(form.infosSortie, {'value': ' '}) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -44,7 +44,7 @@
     <div class="text-center">
         <button type="submit" class="btn btn-primary w-5">Enregistrer</button>
         {{ form_end(form) }}
-        <button class="btn btn-primary w-5"><a href="{{ path('sorties_liste') }}">Annuler</a></button>
+        <button class="btn btn-primary w-5"><a class="lien" href="{{ path('sorties_liste') }}">Annuler</a></button>
     </div>
 
 
