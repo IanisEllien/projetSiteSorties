@@ -29,25 +29,15 @@ class SortiesController extends AbstractController
      */
     public function liste(SortieRepository $repository, Request $request): Response
     {
-        $filtres = new FiltreSortie();
-        $form = $this->createForm(FiltreSortieType::class, $filtres);
-
-        $form->handleRequest($request);
 
         //On instancie une date à N-1 mois + user.pseudo
         $date = new \DateTime('now-1month');
-        $user = $this->getUser();
+        //$user = $this->getUser();
+        $sorties = $repository->listeSortiesMoinsUnMois($date);
 
-        if (!$form->isSubmitted())
-        {
-            $filtres->typeSortie = ['orga','inscrit','noninscrit'];
-        }
-
-        $sorties = $repository->findAvecFiltres($filtres, $date, $user);
 
         return $this->render('sorties/listeSorties.html.twig', [
-            'sorties' => $sorties,
-            'form' => $form->createView()
+            'sorties' => $sorties
         ]);
     }
 

@@ -1,24 +1,45 @@
-{# TODO : Rajouter les labels sur les champs des filtres comme sur la maquette #}
-{{ form_start(form) }}
+<form action="" method="get"></form>
+{#  <form action="{{ path('sorties_liste') }}" method="GET">#}
 
     <div class="row">
-        <div class="col-md-4">
-            {{ form_row(form.campus) }}
 
-            {{ form_row(form.q) }}
+        <div class="col-md-4">
+            <label for="campus">Campus</label>
+            <select id="campus" name="campus">
+                <option value=""></option>
+                <option value="CHARTRES DE BRETAGNE">CHARTRES DE BRETAGNE</option>
+                <option value="LA ROCHE SUR YON">LA ROCHE SUR YON</option>
+                <option value="SAINT-HERBLAIN">SAINT-HERBLAIN</option>
+            </select>
+
+            <input type="text" placeholder="Rechercher par nom...">
 
             <div class="row">
                 <div class="col-md-6">
-                    {{ form_row(form.dateMin) }}
+                    <input type="date">
                 </div>
                 <div class="col-md-6">
-                    {{ form_row(form.dateMax) }}
+                    <input type="date">
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 align-self-md-center">
-            {{ form_row(form.typeSortie) }}
+            <input type="checkbox" id="orga" name="typeSorties[]" value="orga">
+            <label for="orga">Sorties dont je suis l'organisateur/trice</label>
+            <br>
+
+            <input type="checkbox" id="inscrit" name="typeSorties[]" value="inscrit">
+            <label for="inscrit">Sorties auxquelles je suis inscrit/e</label>
+            <br>
+
+            <input type="checkbox" id="noninscrit" name="typeSorties[]" value="noninscrit">
+            <label for="noninscrit">Sorties auxquelles je ne suis pas inscrit/e</label>
+            <br>
+
+            <input type="checkbox" id="finies" name="typeSorties[]" value="finies">
+            <label for="finies">Sorties passées</label>
+            <br>
         </div>
 
         <div class="col-md-4 align-self-md-center">
@@ -26,4 +47,4 @@
         </div>
     </div>
 
-{{ form_end(form) }}
+</form>
