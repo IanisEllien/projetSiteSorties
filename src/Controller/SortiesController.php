@@ -254,6 +254,12 @@ class SortiesController extends AbstractController
 
 
             $motifAnnulation = $sortie->getInfosSortie();
+
+            if($motifAnnulation == "")
+            {
+                $motifAnnulation = 'Pas de motif';
+            }
+
             $sortie->setInfosSortie($description . "\r\n ANNULÉE CAR : " . $motifAnnulation);
             $etat = $etatRepository->findOneBy(['libelle' => 'Annulée']);
             $sortie->setEtat($etat);
