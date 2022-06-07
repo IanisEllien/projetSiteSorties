@@ -1,0 +1,50 @@
+{% extends '/base.html.twig' %}
+
+{% block body %}
+
+{{ form_start(lieuForm) }}
+    <table>
+        <tr>
+            <td colspan="4" id="btnForm">
+                <div id="divBtnForm">
+                    <h1>Ajouter un lieu</h1>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Nom:</label></td>
+            <td>{{ form_row(lieuForm.nom) }}</td>
+        </tr>
+        <tr>
+            <td><label>Rue:</label></td>
+            <td>{{ form_row(lieuForm.rue) }}</td>
+        </tr>
+        <tr>
+            <td><label>Latitude:</label></td>
+            <td>{{ form_row(lieuForm.latitude) }}</td>
+        </tr>
+        <tr>
+            <td><label>Longitude:</label></td>
+            <td>{{ form_row(lieuForm.longitude) }}</td>
+        </tr>
+        <tr>
+            <td><label>Ville:</label></td>
+            <td>{{ form_row(lieuForm.ville) }}</td>
+        </tr>
+        <tr>
+            <td colspan="4" id="btnForm">
+                <div id="divBtnForm">
+                    <button class="btn" type="submit">Créer</button>
+                    <a href="{{ path('sorties_liste') }}" class="btn">Annuler</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    {{ form_end(lieuForm) }}
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} | Créer un lieu
+{% endblock %}
+

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Data\FiltreSortie;
+use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Form\FiltreSortieType;
+use App\Form\LieuType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
@@ -48,6 +50,40 @@ class SortiesController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/creation/lieu", name="creer_lieu")
+     */
+    public function creerLieu(Request $request,
+                              EntityManagerInterface $entityManager,
+                              LieuRepository $lieuRepository
+
+    ): Response {
+
+        $lieu = new Lieu();
+        $lieuForm = $this->createForm(LieuType::class, $lieu);
+        $lieuForm->handleRequest($request);
+
+        if($lieuForm->isSubmitted() && $lieuForm->isValid()){
+
+            $ancienLieu = $lieuRepository->findOneBy(['nom' => $lieu->getNom(), 'rue' => $lieu->getRue()]);
+            if($ancienLieu){
+                $this->addFlash('success','Ce lieu existait déjà !');
+            }
+            else{
+                $entityManager->persist($lieu);
+                $entityManager->flush();
+                $this->addFlash('success','Lieu ajouté avec succés !');
+            }
+
+        }
+
+        return $this->render('sorties/createLieu.html.twig', [
+            'lieuForm' => $lieuForm->createView(),
+
+        ]);
+    }
+
 
     /**
      * @Route("/creation", name="creer")
