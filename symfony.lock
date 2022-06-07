@@ -98,11 +98,11 @@
     "egulias/email-validator": {
         "version": "3.2"
     },
+    "fakerphp/faker": {
+        "version": "v1.19.0"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.12"
-    },
-    "fzaninotto/faker": {
-        "version": "v1.9.2"
     },
     "gedmo/doctrine-extensions": {
         "version": "v3.7.0"
