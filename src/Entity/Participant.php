@@ -46,7 +46,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\Length(min=2, max=50,
      *     minMessage="Le pseudo doit faire au moins {{ limit }} caractères",
      *     maxMessage="Le pseudo ne peut pas faire plus de {{ limit }} caractères")
@@ -58,7 +58,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(min=2, max=50,
      *     minMessage="Le nom doit faire au moins {{ limit }} caractères",
      *     maxMessage="Le nom ne peut pas faire plus de {{ limit }} caractères")
-     * @ORM\Column(type="string", length=50, unique=true)
+     * @ORM\Column(type="string", length=50)
      */
     private $nom;
 

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(csvForm) }}
+    {{ form_widget(csvForm) }}
+    <button type="submit" class="btn">Enregistrer</button>
+    <a href="{{ path('sorties_liste') }}" class="btn">Annuler</a>
+    {{ form_end(csvForm) }}
+
+{% endblock %}
+
+{% block title %}
+    CSV | {{ parent() }}
+{% endblock %}
+
