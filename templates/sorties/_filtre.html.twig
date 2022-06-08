@@ -1,5 +1,5 @@
-<form action="" method="get"></form>
-{#  <form action="{{ path('sorties_liste') }}" method="GET">#}
+
+<form action="{{ path('sorties_liste') }}" method="GET">
 
     <div class="row">
 
@@ -25,19 +25,19 @@
         </div>
 
         <div class="col-md-4 align-self-md-center">
-            <input type="checkbox" id="orga" name="typeSorties[]" value="orga">
+            <input type="checkbox" id="orga" name="orga" value="orga" {% if(app.request.get('orga')) %} checked {% endif %}>
             <label for="orga">Sorties dont je suis l'organisateur/trice</label>
             <br>
 
-            <input type="checkbox" id="inscrit" name="typeSorties[]" value="inscrit">
+            <input type="checkbox" id="inscrit" name="inscrit" value="inscrit" {% if(app.request.get('inscrit')) %} checked {% endif %}>
             <label for="inscrit">Sorties auxquelles je suis inscrit/e</label>
             <br>
 
-            <input type="checkbox" id="noninscrit" name="typeSorties[]" value="noninscrit">
+            <input type="checkbox" id="noninscrit" name="noninscrit" value="noninscrit" {% if(app.request.get('noninscrit')) %} checked {% endif %}>
             <label for="noninscrit">Sorties auxquelles je ne suis pas inscrit/e</label>
             <br>
 
-            <input type="checkbox" id="finies" name="typeSorties[]" value="finies">
+            <input type="checkbox" id="finies" name="finies" value="finies" {% if(app.request.get('finies')) %} checked {% endif %}>
             <label for="finies">Sorties passées</label>
             <br>
         </div>

@@ -32,8 +32,19 @@ class SortiesController extends AbstractController
 
         //On instancie une date à N-1 mois + user.pseudo
         $date = new \DateTime('now-1month');
-        //$user = $this->getUser();
-        $sorties = $repository->listeSortiesMoinsUnMois($date);
+        $user = $this->getUser();
+
+        if (isset($_GET['orga']))
+        {
+            //$filtre = $_GET['orga'];
+            //dump($_GET['orga']);
+            $sorties = $repository->listeSortiesOrganisateur($user);
+        }
+        else
+        {
+            $sorties = $repository->listeSortiesMoinsUnMois($date);
+        }
+
 
 
         return $this->render('sorties/listeSorties.html.twig', [

@@ -165,4 +165,19 @@ class SortieRepository extends ServiceEntityRepository
 
         return $paginator;
     }
+
+    public function listeSortiesOrganisateur($user)
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder = $queryBuilder
+            ->join('s.organisateur','o')
+            ->andWhere('o.pseudo = :user')
+            ->setParameter('user',$user->getPseudo());
+        $query = $queryBuilder->getQuery();
+        $query->getResult();
+
+        $paginator = new Paginator($query);
+
+        return $paginator;
+    }
 }
