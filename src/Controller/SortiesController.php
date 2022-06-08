@@ -46,7 +46,7 @@ class SortiesController extends AbstractController
             $sorties = $repository->listeSortiesMoinsUnMois($date);
         }
 
-        dump($filtres);
+        //dump($filtres);
 
         $campus = $campusRepository->findAll();
 
