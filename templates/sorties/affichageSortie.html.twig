@@ -5,92 +5,141 @@
 {% endblock %}
 
 {% block body %}
-<div class="afficherProfil">
-    <h2 class="display-4">Afficher une sortie</h2>
-    <div class="row">
-        <div class="col">
-         <table class="affichageSortie">
-             <tr>
-                <td class><label>Nom de la sortie :</label></td>
-                <td>{{ sortie.nom }}</td>
-            </tr>
-             <tr>
-                 <td><label>Date et heure de la sortie : </label></td>
-                 <td>{{ sortie.dateHeureDebut | date ('d/m/o H\\Hi') }}</td>
-             </tr>
-             <tr>
-                 <td><label>Date limite d'inscription : </label></td>
-                 <td>{{ sortie.dateLimiteInscription | date('d/m/o') }}</td>
-             </tr>
-             <tr>
-                 <td><label>Nombre de places : </label></td>
-                 <td>{{ sortie.nbInscriptionMax }}</td>
-             </tr>
-             <tr>
-                 <td><label>Durée : </label></td>
-                 <td>{{ sortie.duree }} minutes</td>
-             </tr>
-             <tr>
-                 <td><label>Description et infos : </label></td>
-                 <td>{{ sortie.infosSortie }}</td>
-             </tr>
-         </table>
-        </div>
-        <div class="col">
-            <table class="affichageSortie">
-                <tr>
-                    <td><label>Campus : </label></td>
-                    <td>{{ sortie.campus.nom }}</td>
-                </tr>
-                <tr>
-                    <td><label>Lieu : </label></td>
-                    <td>{{ sortie.lieu.nom }}</td>
-                </tr>
-                <tr>
-                    <td><label>Rue : </label></td>
-                    <td>{{ sortie.lieu.rue }}</td>
-                </tr>
-                <tr>
-                    <td><label>Code postal : </label></td>
-                    <td>{{ sortie.lieu.ville.codePostal }}</td>
-                </tr>
-                <tr>
-                    <td><label>Latitude : </label></td>
-                    <td>{{ sortie.lieu.latitude }}</td>
-                </tr>
-                <tr>
-                    <td><label>Longitude : </label></td>
-                    <td>{{ sortie.lieu.longitude }}</td>
-                </tr>
-            </table>
-        </div>
+    <h2 class="display-4 text-center">Afficher une sortie</h2>
+
+    <div class="Desktop affichageSortie">
+    <div class="container-fluid">
+        <div class="row">
+         <div class="col-md">
+             <div>
+                 <label class="titreInfo Desktop">Nom de la sortie :</label>
+            {{ sortie.nom }}
+             </div>
+                 <div>
+                     <label class="titreInfo Desktop">Date et heure de la sortie : </label>
+                 {{ sortie.dateHeureDebut | date ('d/m/o H\\Hi') }}
+                 </div>
+
+                <div>
+                     <label class="titreInfo">Date limite d'inscription : </label>
+                 {{ sortie.dateLimiteInscription | date('d/m/o') }}
+                 </div>
+
+                 <div>
+                 <label class="titreInfo">Nombre de places : </label>
+                 {{ sortie.nbInscriptionMax }}
+                 </div>
+
+             <div>
+                 <label class="titreInfo">Durée : </label>
+                 {{ sortie.duree }} minutes
+             </div>
+
+             <div>
+                 <label class="titreInfo">Description et infos: </label>
+                 {{ sortie.infosSortie }}
+             </div>
+         </div>
+            <div class="col-md">
+                <div>
+                    <label class="titreInfo">Campus : </label>
+                    {{ sortie.campus.nom }}
+                </div>
+                <div>
+                    <label class="titreInfo">Lieu : </label>
+                    {{ sortie.lieu.nom }}
+                </div>
+                <div>
+                    <label class="titreInfo">Rue : </label>
+                    {{ sortie.lieu.rue }}
+                </div>
+                <div>
+                    <label class="titreInfo">Code postal : </label>
+                    {{ sortie.lieu.ville.codePostal }}
+                </div>
+                <div>
+                    <label class="titreInfo">Latitude : </label>
+                    {{ sortie.lieu.latitude }}
+                </div>
+                <div>
+                    <label class="titreInfo">Longitude : </label>
+                    {{ sortie.lieu.longitude }}
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    </div>
+
+    <div class="Smartphone affichageSortie">
+        <div>
+        <label class="titreInfo">Nom :</label>
+            {{ sortie.nom }}
+        </div>
+        <div>
+            <label class="titreInfo">Date et heure :</label>
+            {{ sortie.dateHeureDebut | date ('d/m/o H\\Hi') }}
+        </div>
+        <div>
+            <label class="titreInfo">Ville :</label>
+            {{ sortie.lieu.ville.nom }}
+        </div>
+        <div>
+            <label class="titreInfo">Lieu :</label>
+            {{ sortie.lieu.nom }}
+        </div>
+        <div>
+            <label class="titreInfo">Rue :</label>
+            {{ sortie.lieu.rue }}
+        </div>
+        <div>
+            <label class="titreInfo">Code postal :</label>
+            {{ sortie.lieu.ville.codePostal }}
+        </div>
+        <div>
+            <label class="titreInfo">Latitude :</label>
+            {{ sortie.lieu.latitude }}
+        </div>
+        <div>
+            <label class="titreInfo">Longitude :</label>
+            {{ sortie.lieu.longitude }}
+        </div>
+        <div>
+            <label class="titreInfo">Clôture :</label>
+            {{ sortie.dateLimiteInscription | date('d/m/o') }}
+        </div>
+        <div>
+            <label class="titreInfo">Durée :</label>
+            {{ sortie.duree }} minutes
+        </div>
+        <div>
+            <label class="titreInfo labelDescription">Description et infos :</label>
+            <div class="description">{{ sortie.infosSortie }}</div>
+        </div>
+    </div>
 
     {% if sortie.participants.count == 0 %}
     <tr class="row">
-        <td class="col-12">
+        <td class="col">
             <div class="h2 display-custom">Personne n'est encore inscrit à cette sortie</div>
         </td>
     </tr>
     {% else %}
-    <p>Liste des participants inscrits</p>
-    <div class="table-participants">
+        <p><strong>Liste des participants inscrits</strong></p>
+    <div class="table-participants table-responsive">
         <table class="table table-striped table-hover text-center">
             <thead>
             <tr class="row">
-                <th class="col-sm-3">Pseudo</th>
-                <th class="col-sm-9">Nom</th>
+                <th class="col-6 col-md-3">Pseudo</th>
+                <th class="col-6 col-md-9">Nom</th>
             </tr>
             </thead>
             <tbody>
             {% for participant in sortie.participants %}
             <tr class="row">
-                <th class="col-sm-3">
+                <th class="col-6 col-md-3">
                     {{ participant.pseudo }}
                 </th>
-                <th class="col-sm-9">
+                <th class="col-6 col-md-9">
                     {{ participant.prenom }} {{ participant.nom | upper }}
                 </th>
             </tr>

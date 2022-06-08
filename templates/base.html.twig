@@ -18,13 +18,14 @@
         {% endblock %}
     </head>
     <body>
-    <header class="">
-        <nav class="navbar navbar-expand-lg navbar-dark">
+    <header>
+        <nav class="navbar navbar-expand-md navbar-expand navbar-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Sortir.com</a>
 
+                <div class="navbar-desktop">
                 {% if app.user %}
-                <div class="smartphone-display" id="navbarSupportedContent">
+                    <div class="d-flex justify-content-end">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                         {% if is_granted ("ROLE_ADMIN") %}
@@ -51,7 +52,22 @@
                         </li>
                     </ul>
                 </div>
+                </div>
+                    <div class="navbar-mobile">
+                        <div class="d-flex">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ path('sorties_liste') }}">Accueil</a>
+                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Se déconnecter</a>
+                        </li>
+                        </ul>
+                        </div>
+                    </div>
+            </div>
                 {% endif %}
+            </div>
             </div>
         </nav>
     </header>

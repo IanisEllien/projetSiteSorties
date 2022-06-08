@@ -95,17 +95,17 @@ table td{
 
 .table-custom{
   overflow-y: scroll;
-  height: 350px;
+  max-height: 40%;
   width: 100%;
-  color: white;
 }
 
 .table-participants{
-  float : left;
+  float : start;
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 200px;
   width: 25%;
+  padding: 5px 5px;
 }
 
 .afficherProfil{
@@ -113,14 +113,27 @@ table td{
 }
 
 .affichageSortie{
-  line-height: 3em;
+  line-height: 2em;
   text-align: left;
+  margin-bottom: 2%;
 }
 
 .photoUser{
   max-width: 200px;
   max-height: 150px;
   float: left;
+}
+
+.titreInfo{
+  width: 30%;
+}
+
+.description{
+  margin-left: 30%;
+}
+
+.labelDescription{
+  display: block;
 }
 
 #navbarSupportedContent ul li a:hover{
@@ -166,19 +179,23 @@ table td{
   text-decoration: none;
 }
 
-@media (max-width: 768px)
-{
-  .smartphone-display{
+// format desktop
+@media (min-width: 922px) {
+  .Smartphone {
     display: none;
-  }
-
-  .smartphone-sorties{
-
   }
 }
 
+// format tablette
 @media (min-width: 768px) {
-  .computer-tablet-display {
+  .Smartphone, .navbar-mobile {
+    display: none;
+  }
+}
+
+// format smartphone
+@media (max-width: 768px) {
+  .Desktop, .navbar-desktop {
     display: none;
   }
 }
