@@ -36,6 +36,14 @@
                     </label>
                 </div></td>
         </tr>
+        <tr>
+            <td><div class="checkbox mb-3">
+
+
+                        <a href="{{ path('app_forgot_password_request') }}">Vous avez oublié votre mot de passe ?</a>
+
+                </div></td>
+        </tr>
     </table>
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
