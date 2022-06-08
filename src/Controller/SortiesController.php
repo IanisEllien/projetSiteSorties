@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Data\FiltreSortie;
+use App\Entity\Campus;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Form\FiltreSortieType;
 use App\Form\LieuType;
 use App\Form\SortieType;
+use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
@@ -27,28 +29,30 @@ class SortiesController extends AbstractController
     /**
      * @Route("/accueil", name="liste")
      */
-    public function liste(SortieRepository $repository, Request $request): Response
+    public function liste(SortieRepository $repository, Request $request, CampusRepository $campusRepository): Response
     {
 
         //On instancie une date à N-1 mois + user.pseudo
         $date = new \DateTime('now-1month');
         $user = $this->getUser();
 
-        if (isset($_GET['orga']))
+        if (!empty($request->query->all()))
         {
-            //$filtre = $_GET['orga'];
-            //dump($_GET['orga']);
-            $sorties = $repository->listeSortiesOrganisateur($user);
+            $filtres = $request->query->all();
+            $sorties = $repository->filtreListeSorties($user, $filtres, $date);
         }
         else
         {
             $sorties = $repository->listeSortiesMoinsUnMois($date);
         }
 
+        dump($filtres);
 
+        $campus = $campusRepository->findAll();
 
         return $this->render('sorties/listeSorties.html.twig', [
-            'sorties' => $sorties
+            'sorties' => $sorties,
+            'campus' => $campus
         ]);
     }
 
