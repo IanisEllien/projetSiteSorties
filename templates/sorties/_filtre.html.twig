@@ -8,7 +8,7 @@
             <select id="campus" name="campus">
                 <option></option>
                 {% for site in campus %}
-                    <option value="{{ site.id }}">{{ site }}</option>
+                    <option value="{{ site.id }}" {% if (app.request.get('campus') == site.id) %} selected {% endif %}>{{ site }}</option>
                 {% endfor %}
             </select>
 

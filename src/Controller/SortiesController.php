@@ -131,6 +131,11 @@ class SortiesController extends AbstractController
             $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addFlash('success','Sortie ajoutée avec succés !');
+
+            return $this->redirectToRoute('sorties_liste', [
+                'controller_name' => 'SortiesController',
+            ]);
+
         }
 
         return $this->render('sorties/createSortie.html.twig', [
