@@ -6,20 +6,20 @@
         <div class="col-md-4">
             <label for="campus">Campus</label>
             <select id="campus" name="campus">
-                <option value=""></option>
-                <option value="CHARTRES DE BRETAGNE">CHARTRES DE BRETAGNE</option>
-                <option value="LA ROCHE SUR YON">LA ROCHE SUR YON</option>
-                <option value="SAINT-HERBLAIN">SAINT-HERBLAIN</option>
+                <option></option>
+                {% for site in campus %}
+                    <option value="{{ site.id }}">{{ site }}</option>
+                {% endfor %}
             </select>
 
-            <input type="text" placeholder="Rechercher par nom...">
+            <input type="text" name="nom" placeholder="Rechercher par nom...">
 
             <div class="row">
                 <div class="col-md-6">
-                    <input type="date">
+                    <input type="date" name="dateMin" {% if(app.request.get('dateMin')) %} value="{{ app.request.get('dateMin') }}" {% endif %}>
                 </div>
                 <div class="col-md-6">
-                    <input type="date">
+                    <input type="date" name="dateMax" {% if(app.request.get('dateMax')) %} value="{{ app.request.get('dateMax') }}" {% endif %}>
                 </div>
             </div>
         </div>

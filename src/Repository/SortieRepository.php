@@ -166,13 +166,85 @@ class SortieRepository extends ServiceEntityRepository
         return $paginator;
     }
 
-    public function listeSortiesOrganisateur($user)
+    public function filtreListeSorties($user, $filtres, $date): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->join('s.organisateur','o');
+
+
+        if (in_array('inscrit',$filtres))
+        {
+            $queryBuilder = $queryBuilder
+                ->join('s.participants','p')
+                ->andWhere('p.id = :user')
+                ->setParameter('user',$user->getId());
+        }
+
+        if (in_array('noninscrit',$filtres))
+        {
+            $queryBuilder = $queryBuilder
+                ->leftJoin('s.participants','pa','WITH','pa.pseudo = :user')
+                ->andWhere('o.id <> :user')
+                ->setParameter('user',$user->getId());
+        }
+
+        if (in_array('orga',$filtres))
+        {
+            $queryBuilder = $queryBuilder
+                ->andWhere('o.id = :user')
+                ->setParameter('user',$user->getId());
+        }
+
+        if (!in_array('finies', $filtres))
+        {
+            $dateJour = new DateTime();
+            $queryBuilder = $queryBuilder
+                ->andWhere('s.dateHeureDebut >= :dateJour')
+                ->setParameter('dateJour',$dateJour);
+        }
+        else
+        {
+            $dateJour = new DateTime();
+            $queryBuilder = $queryBuilder
+                ->andWhere('s.dateHeureDebut < :dateJour')
+                ->setParameter('dateJour',$dateJour);
+        }
+
+        if (array_key_exists('campus', $filtres) && $filtres['campus'] != "")
+        {
+            $queryBuilder = $queryBuilder
+                ->andWhere('s.campus = :c')
+                ->setParameter('c', $filtres['campus']);
+        }
+
+
+        if (array_key_exists('nom', $filtres) && $filtres['nom'] != "")
+        {
+            $queryBuilder = $queryBuilder
+                ->andWhere('s.nom LIKE :q')
+                ->setParameter('q', "%{$filtres['nom']}%");
+        }
+
+        if (array_key_exists('dateMin', $filtres) && $filtres['dateMin'] != "")
+        {
+            $queryBuilder = $queryBuilder
+                ->andWhere('s.dateHeureDebut >= :min')
+                ->setParameter('min', $filtres['dateMin']);
+        }
+
+        if (array_key_exists('dateMax', $filtres) && $filtres['dateMax'] != "")
+        {
+            $queryBuilder  = $queryBuilder
+                ->andWhere('s.dateHeureDebut <= :max')
+                ->setParameter('max', $filtres['dateMax']);
+        }
+
+
         $queryBuilder = $queryBuilder
-            ->join('s.organisateur','o')
-            ->andWhere('o.pseudo = :user')
-            ->setParameter('user',$user->getPseudo());
+            ->andWhere('s.dateHeureDebut >= :val')
+            ->setParameter('val', $date);
+        $queryBuilder->orderBy('s.dateHeureDebut', 'ASC');
+
         $query = $queryBuilder->getQuery();
         $query->getResult();
 
