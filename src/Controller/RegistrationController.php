@@ -44,6 +44,18 @@ class RegistrationController extends AbstractController
 
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $form->get('fichier')->getData();
+            $fileName = $uploadedFile->getClientOriginalName();
+            //dd($fileName);
+            $root = $this->getParameter('kernel.project_dir');
+
+            $destination =($root . '/public/uploads');
+
+            $uploadedFile->move(
+                $destination,
+                $fileName
+            );
+            //dd($uploadedFile);
+           //dd($fileName);
 
             //$originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
             //$safeFilename = $slugger->slug($originalFilename);
@@ -51,11 +63,11 @@ class RegistrationController extends AbstractController
             //dd($newFilename);
 
             $compteur = 0;
-            //$root = $this->getParameter('kernel.project_dir');
+
             //dd($root);
-            //$file = fopen($root . '\src\Data\data.csv', 'r');
-            //while (($line = fgetcsv($file)) !== FALSE) {
-            while (($line = $uploadedFile) != FALSE) {
+            $file = fopen($root.'/public/uploads/'.$fileName, 'r');
+            while (($line = fgetcsv($file)) !== FALSE) {
+            //while (($line = $data) != FALSE) {
                 //dd($line);
                 $participant = new Participant();
                 $participant->setPseudo($line[0]);
@@ -71,7 +83,7 @@ class RegistrationController extends AbstractController
                 $participant->setRoles(["ROLE_USER"]);
                 $participant->setAdministrateur(false);
                 $participant->setActif(true);
-                $campus = $campusRepository->findOneBy(['id' => $line[6]]);
+                $campus = $campusRepository->findOneBy(['nom' => $line[6]]);
 
                 $participant->setCampus($campus);
                 //dd($participant);
@@ -86,7 +98,7 @@ class RegistrationController extends AbstractController
             }
 
             //dd($compteur);
-            //fclose($file);
+            fclose($file);
             //dd($file);
             $this->addFlash('success', $compteur . ' utilisateur(s) ajouté(s) avec succés !');
 
