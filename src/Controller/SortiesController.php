@@ -111,7 +111,7 @@ class SortiesController extends AbstractController
             $dateSortie = $sortie->getDateHeureDebut();
             $dateLimiteInscription = $sortie->getDateLimiteInscription();
             if($dateLimiteInscription > $dateSortie){
-                $this->addFlash('warning','La date limite d\'inscription doit être inférieure à la date de sortie');
+                $this->addFlash('warning','La date limite d\'inscription doit être antérieure à la date de sortie');
                 $this->redirectToRoute('sorties_creer');
                 //throw new Exception("La date limite d'inscription doit être inférieure à la date de sortie");
             }
@@ -296,7 +296,12 @@ class SortiesController extends AbstractController
      */
     public function annuler(int $id, SortieRepository $sortieRepository, Request  $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
     {
+        $idUser = $this->getUser()->getId();
+        $userRole = $this->getUser()->getRoles();
+        //dd($userRole);
         $sortie = $sortieRepository->find($id);
+        $idUserSortie = $sortie->getOrganisateur()->getId();
+        //dd($idUserSortie);
         $description = $sortie->getInfosSortie();
         $dateSortie = $sortie->getDateHeureDebut();
         $dateCloture = $sortie->getDateLimiteInscription();
@@ -309,33 +314,43 @@ class SortiesController extends AbstractController
             throw $this->createNotFoundException('La sortie que vous cherchez à annuler n\'existe pas');
         }
 
-        if($sortieForm->isSubmitted() && $sortieForm->isValid())
-        {
+        if(($idUser === $idUserSortie) or $userRole[0] == "ROLE_ADMIN"){
 
-
-            $motifAnnulation = $sortie->getInfosSortie();
-
-            if($motifAnnulation == "")
+            if($sortieForm->isSubmitted() && $sortieForm->isValid())
             {
-                $motifAnnulation = 'Pas de motif';
+
+
+                $motifAnnulation = $sortie->getInfosSortie();
+
+                if($motifAnnulation == "")
+                {
+                    $motifAnnulation = 'Pas de motif';
+                }
+
+                $sortie->setInfosSortie($description . "\r\n ANNULÉE CAR : " . $motifAnnulation);
+                $etat = $etatRepository->findOneBy(['libelle' => 'Annulée']);
+                $sortie->setEtat($etat);
+
+                // On remet les dates parce que sinon elles changent
+                $sortie->setDateHeureDebut($dateSortie);
+                $sortie->setDateLimiteInscription($dateCloture);
+
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+
+                $this->addFlash('success','La sortie a bien été annulée');
+
+                return $this->redirectToRoute('sorties_liste', [
+                    'controller_name' => 'SortiesController',
+                ]);
             }
 
-            $sortie->setInfosSortie($description . "\r\n ANNULÉE CAR : " . $motifAnnulation);
-            $etat = $etatRepository->findOneBy(['libelle' => 'Annulée']);
-            $sortie->setEtat($etat);
+        }
 
-            // On remet les dates parce que sinon elles changent
-            $sortie->setDateHeureDebut($dateSortie);
-            $sortie->setDateLimiteInscription($dateCloture);
 
-            $entityManager->persist($sortie);
-            $entityManager->flush();
 
-            $this->addFlash('success','La sortie a bien été annulée');
-
-            return $this->redirectToRoute('sorties_liste', [
-                'controller_name' => 'SortiesController',
-            ]);
+        else{
+            $this->addFlash('warning','Vous n\'êtes pas autorisé à annuler cette sortie.');
         }
 
         return $this->render('sorties/annulerSortie.html.twig', [
