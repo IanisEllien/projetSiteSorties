@@ -1,49 +1,55 @@
 
 <form action="{{ path('sorties_liste') }}" method="GET">
 
-    <div class="row">
+    <div class="container-fluid">
+        <div class="row">
 
-        <div class="col-md-4">
-            <label for="campus">Campus</label>
-            <select id="campus" name="campus">
-                <option></option>
-                {% for site in campus %}
-                    <option value="{{ site.id }}" {% if (app.request.get('campus') == site.id) %} selected {% endif %}>{{ site }}</option>
-                {% endfor %}
-            </select>
+            <div class="col-sm-12 col-md-6 col-xl-4 align-self-center">
+                <label for="campus">Campus : </label>
+                <select id="campus" name="campus">
+                    <option></option>
+                    {% for site in campus %}
+                        <option value="{{ site.id }}" {% if (app.request.get('campus') == site.id) %} selected {% endif %}>{{ site }}</option>
+                    {% endfor %}
+                </select>
 
-            <input type="text" name="nom" placeholder="Rechercher par nom...">
-
-            <div class="row">
-                <div class="col-md-6">
-                    <input type="date" name="dateMin" {% if(app.request.get('dateMin')) %} value="{{ app.request.get('dateMin') }}" {% endif %}>
+                <div class="">
+                    <input type="text" class="rounded" name="nom" placeholder="Rechercher par nom...">
                 </div>
-                <div class="col-md-6">
-                    <input type="date" name="dateMax" {% if(app.request.get('dateMax')) %} value="{{ app.request.get('dateMax') }}" {% endif %}>
+
+                <div class="row">
+                    <div class="col-md-4 col-xl-6">
+                        <label for="dateMin">Entre le : </label>
+                        <input type="date" id="dateMin" name="dateMin" {% if(app.request.get('dateMin')) %} value="{{ app.request.get('dateMin') }}" {% endif %}>
+                    </div>
+                    <div class="col-md-4 col-xl-6">
+                        <label for="dateMax">et le : </label>
+                        <input type="date" id="dateMax" name="dateMax" {% if(app.request.get('dateMax')) %} value="{{ app.request.get('dateMax') }}" {% endif %}>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4 align-self-md-center">
-            <input type="checkbox" id="orga" name="orga" value="orga" {% if(app.request.get('orga')) %} checked {% endif %}>
-            <label for="orga">Sorties dont je suis l'organisateur/trice</label>
-            <br>
+            <div class="col-sm-12 col-md-6 col-xl-4 align-self-md-center">
+                <input type="checkbox" id="orga" name="orga" value="orga" {% if(app.request.get('orga')) %} checked {% endif %}>
+                <label for="orga">Sorties dont je suis l'organisateur/trice</label>
+                <br>
 
-            <input type="checkbox" id="inscrit" name="inscrit" value="inscrit" {% if(app.request.get('inscrit')) %} checked {% endif %}>
-            <label for="inscrit">Sorties auxquelles je suis inscrit/e</label>
-            <br>
+                <input type="checkbox" id="inscrit" name="inscrit" value="inscrit" {% if(app.request.get('inscrit')) %} checked {% endif %}>
+                <label for="inscrit">Sorties auxquelles je suis inscrit/e</label>
+                <br>
 
-            <input type="checkbox" id="noninscrit" name="noninscrit" value="noninscrit" {% if(app.request.get('noninscrit')) %} checked {% endif %}>
-            <label for="noninscrit">Sorties auxquelles je ne suis pas inscrit/e</label>
-            <br>
+                <input type="checkbox" id="noninscrit" name="noninscrit" value="noninscrit" {% if(app.request.get('noninscrit')) %} checked {% endif %}>
+                <label for="noninscrit">Sorties auxquelles je ne suis pas inscrit/e</label>
+                <br>
 
-            <input type="checkbox" id="finies" name="finies" value="finies" {% if(app.request.get('finies')) %} checked {% endif %}>
-            <label for="finies">Sorties passées</label>
-            <br>
-        </div>
+                <input type="checkbox" id="finies" name="finies" value="finies" {% if(app.request.get('finies')) %} checked {% endif %}>
+                <label for="finies">Sorties passées</label>
+                <br>
+            </div>
 
-        <div class="col-md-4 align-self-md-center">
-            <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+            <div class="col-md-4 col-xl-4 align-self-center">
+                <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+            </div>
         </div>
     </div>
 
