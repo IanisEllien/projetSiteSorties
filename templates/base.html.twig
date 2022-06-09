@@ -35,9 +35,20 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Campus</a>
                         </li>
-
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Gestion des utilisateurs
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="#">Inscription</a></li>
+                                    <li><a class="dropdown-item" href="#">Désactivation</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Suppression</a></li>
+                                </ul>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}">Inscription</a>
+                            </li>
                             </li>
                         {% endif %}
 
