@@ -8,6 +8,7 @@ use App\Form\InscriptionCsvType;
 use App\Form\ParticipantType;
 use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
+use App\Repository\SortieRepository;
 use App\Security\AppAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\DocBlock\Serializer;
@@ -193,16 +194,45 @@ class AdminController extends AbstractController
     /**
      * @Route("/suppression", name="supprimer")
      */
-    public function supprimer(int $id, ParticipantRepository $participantRepository): Response
+    public function supprimer(Request $request, ParticipantRepository $participantRepository, SortieRepository $sortieRepository, EntityManagerInterface $em): Response
     {
-        $participant = $participantRepository->find($id);
+        $participants = $participantRepository->findBy([],['pseudo'=>'ASC']);
 
-        if(!$participant){
-            throw $this->createNotFoundException('Ce profil n\'existe pas !');
+
+        $ids = $request->request->get('userID');
+        $method = $request->getMethod();
+
+        if ($method === 'POST') {
+            if ($ids) {
+                $cpt = 0;
+                $sortieEffacee = false;
+
+                foreach ($ids as $id) {
+
+                    $participant = $participantRepository->find($id);
+                    $sortie = $sortieRepository->findBy(['organisateur'=>$id]);
+                    if ($sortie){
+                        $sortieEffacee = true;
+                    }
+                    $participant->setActif(false);
+                    $em->remove($participant);
+                    $cpt++;
+                }
+                $em->flush();
+
+                if ($cpt == 1) {
+                    $this->addFlash('success', $sortieEffacee?$cpt . ' participant a bien été supprimé. Une ou plusieurs sorties ont également été supprimées':$cpt . ' participant a bien été supprimé');
+                } else {
+                    $this->addFlash('success', $sortieEffacee?$cpt . ' participants ont bien été supprimés. Une ou plusieurs sorties ont également été supprimées':$cpt . ' participants ont bien été supprimés');
+                }
+                return $this->redirectToRoute('sorties_liste');
+            } else {
+                $this->addFlash('warning', 'Veuillez sélectionner au moins un participant');
+            }
         }
 
-        return $this->render('user/afficherProfil.html.twig', [
-            "participant" => $participant
+        return $this->render('user/supprimer.html.twig', [
+            'participants'=> $participants
         ]);
     }
 
