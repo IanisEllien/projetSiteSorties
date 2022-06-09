@@ -17,6 +17,7 @@ use App\Repository\SortieRepository;
 use App\Services\ServicesSorties;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -106,35 +107,48 @@ class SortiesController extends AbstractController
         $lieux = $lieuRepository->findAll();
 
         if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrerSortie') && $sortieForm->isValid() || $sortieForm->getClickedButton() === $sortieForm->get('publierSortie') && $sortieForm->isValid()){
-            $lieu = $sortie->getLieu();
-            $ancienLieu = $lieuRepository->findOneBy(['nom' => $lieu->getNom(), 'rue' => $lieu->getRue()]);
-            if($ancienLieu){
-                $sortie->setLieu($ancienLieu);
+
+            $dateSortie = $sortie->getDateHeureDebut();
+            $dateLimiteInscription = $sortie->getDateLimiteInscription();
+            if($dateLimiteInscription > $dateSortie){
+                $this->addFlash('warning','La date limite d\'inscription doit être inférieure à la date de sortie');
+                $this->redirectToRoute('sorties_creer');
+                //throw new Exception("La date limite d'inscription doit être inférieure à la date de sortie");
             }
+
             else{
-                $sortie->setLieu($lieu);
-                $entityManager->persist($lieu);
+                $lieu = $sortie->getLieu();
+                $ancienLieu = $lieuRepository->findOneBy(['nom' => $lieu->getNom(), 'rue' => $lieu->getRue()]);
+                if($ancienLieu){
+                    $sortie->setLieu($ancienLieu);
+                }
+                else{
+                    $sortie->setLieu($lieu);
+                    $entityManager->persist($lieu);
+                    $entityManager->flush();
+                    $this->addFlash('success','Lieu ajouté avec succés !');
+                }
+
+                if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrerSortie')){
+                    $etat = $etatRepository->findOneBy(['libelle' => 'Créée']);
+                }
+                else{
+                    $etat = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
+                }
+
+                $sortie->setCampus($this->getUser()->getCampus());
+                $sortie->setEtat($etat);
+                $sortie->setOrganisateur($this->getUser());
+                $entityManager->persist($sortie);
                 $entityManager->flush();
-                $this->addFlash('success','Lieu ajouté avec succés !');
+                $this->addFlash('success','Sortie ajoutée avec succés !');
+
+                return $this->redirectToRoute('sorties_liste', [
+                    'controller_name' => 'SortiesController',
+                ]);
             }
 
-            if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrerSortie')){
-                $etat = $etatRepository->findOneBy(['libelle' => 'Créée']);
-            }
-            else{
-                $etat = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
-            }
 
-            $sortie->setCampus($this->getUser()->getCampus());
-            $sortie->setEtat($etat);
-            $sortie->setOrganisateur($this->getUser());
-            $entityManager->persist($sortie);
-            $entityManager->flush();
-            $this->addFlash('success','Sortie ajoutée avec succés !');
-
-            return $this->redirectToRoute('sorties_liste', [
-                'controller_name' => 'SortiesController',
-            ]);
 
         }
 
