@@ -397,15 +397,12 @@ class SortiesController extends AbstractController
 
             }
 
+            else{
+                $this->addFlash('warning','Vous n\'êtes pas autorisé à annuler cette sortie.');
+            }
+
         }
 
-
-
-
-
-        else{
-            $this->addFlash('warning','Vous n\'êtes pas autorisé à annuler cette sortie.');
-        }
 
         return $this->render('sorties/annulerSortie.html.twig', [
             'controller_name' => 'SortiesController',
