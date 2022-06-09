@@ -22,6 +22,7 @@
             <td>{{ form_row(sortieForm.dateHeureDebut) }}</td>
             <td><label>Ville:</label></td>
             <td>{{ form_row(sortieForm.lieu.ville) }}</td>
+            <td><a href="{{ path('sorties_creer_ville') }}" class="btn">+</a></td>
         </tr>
         <tr>
             <td><label>Date limite d'inscription:</label></td>

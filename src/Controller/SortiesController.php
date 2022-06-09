@@ -6,14 +6,17 @@ use App\Data\FiltreSortie;
 use App\Entity\Campus;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use App\Form\FiltreSortieType;
 use App\Form\LieuType;
 use App\Form\SortieType;
+use App\Form\VilleType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
 use App\Services\ServicesSorties;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,6 +61,44 @@ class SortiesController extends AbstractController
     }
 
     /**
+     * @Route("/creation/ville", name="creer_ville")
+     */
+    public function creerVille(Request $request,
+                               EntityManagerInterface $entityManager,
+                                VilleRepository $villeRepository
+    ) : Response {
+
+        $ville = new Ville();
+        $villeForm = $this->createForm(VilleType::class, $ville);
+        $villeForm->handleRequest($request);
+
+        if($villeForm->isSubmitted() && $villeForm->isValid()){
+
+            $ancienneVille = $villeRepository->findOneBy(['nom' => $ville->getNom()]);
+            if($ancienneVille){
+                $this->addFlash('warning','Cette ville existait déjà !');
+                $this->redirectToRoute('sorties_creer');
+            }
+            else{
+                $entityManager->persist($ville);
+                $entityManager->flush();
+                $this->addFlash('success','Ville ajoutée avec succés !');
+                $this->redirectToRoute('sorties_creer');
+            }
+
+            return $this->redirectToRoute('sorties_creer', [
+
+            ]);
+
+        }
+
+        return $this->render('sorties/createVille.html.twig', [
+            'villeForm' => $villeForm->createView(),
+
+        ]);
+    }
+
+    /**
      * @Route("/creation/lieu", name="creer_lieu")
      */
     public function creerLieu(Request $request,
@@ -74,13 +115,19 @@ class SortiesController extends AbstractController
 
             $ancienLieu = $lieuRepository->findOneBy(['nom' => $lieu->getNom(), 'rue' => $lieu->getRue()]);
             if($ancienLieu){
-                $this->addFlash('success','Ce lieu existait déjà !');
+                $this->addFlash('warning','Ce lieu existait déjà !');
+                $this->redirectToRoute('sorties_creer');
             }
             else{
                 $entityManager->persist($lieu);
                 $entityManager->flush();
                 $this->addFlash('success','Lieu ajouté avec succés !');
+                $this->redirectToRoute('sorties_creer');
             }
+
+            return $this->redirectToRoute('sorties_creer', [
+
+            ]);
 
         }
 

@@ -1,0 +1,41 @@
+{% extends '/base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Créer une ville
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(villeForm) }}
+
+    <table>
+        <tr>
+            <td colspan="4" id="btnForm">
+                <div id="divBtnForm">
+                    <h1>Ajouter une ville</h1>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Nom:</label></td>
+            <td>{{ form_row(villeForm.nom) }}</td>
+        </tr>
+        <tr>
+            <td><label>Code postal:</label></td>
+            <td>{{ form_row(villeForm.codePostal) }}</td>
+        </tr>
+        <tr>
+            <td colspan="4" id="btnForm">
+                <div id="divBtnForm">
+                    <button class="btn" type="submit">Ajouter la ville</button>
+                    <a class="btn smartphone-display" href="{{ path('sorties_creer') }}">Retour</a>
+                    <a href="{{ path('sorties_liste') }}" class="btn">Annuler</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    {{ form_end(villeForm) }}
+
+{% endblock %}
+
