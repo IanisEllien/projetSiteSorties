@@ -101,15 +101,23 @@
                         {% endif %}
                         {% if etat == "Ouvert" %}
                             -
+                            {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                                <a href="{{ path('sorties_annuler', {'id': sortie.id}) }}">Annuler</a> -
+
+                            {% elseif inscrit and app.user.roles[0] == "ROLE_ADMIN" %}
+                                -  <a href="{{ path('sorties_desistement', {'id': sortie.id}) }}">Se désister</a>
+                            {% elseif app.user.roles[0] == "ROLE_ADMIN" and not inscrit %}
+                                - <a href="{{ path('sorties_inscription', {'id': sortie.id}) }}">S'inscrire</a>
+                            {% endif %}
+
+
                             {% if sortie.organisateur.pseudo is same as app.user.pseudo() %}
                                 <a href="{{ path('sorties_annuler', {'id': sortie.id}) }}">Annuler</a>
-                            {% elseif app.user.roles[0] == "ROLE_ADMIN" %}
-                                <a href="{{ path('sorties_annuler', {'id': sortie.id}) }}">Annuler</a>
-                                {% endif %}
-                            {% if inscrit %}
-                              -  <a href="{{ path('sorties_desistement', {'id': sortie.id}) }}">Se désister</a>
+
+                            {% elseif inscrit %}
+                                <a href="{{ path('sorties_desistement', {'id': sortie.id}) }}">Se désister</a>
                             {% else %}
-                               - <a href="{{ path('sorties_inscription', {'id': sortie.id}) }}">S'inscrire</a>
+                                <a href="{{ path('sorties_inscription', {'id': sortie.id}) }}">S'inscrire</a>
                             {% endif %}
                         {% endif %}
                     {% if etat == "Fermé" %}
