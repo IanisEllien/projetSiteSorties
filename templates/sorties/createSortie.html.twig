@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-    <h3>Créer une sortie</h3>
+    <h2 class="display-4 text-center">Créer une sortie</h2>
     {{ form_start(sortieForm) }}
 
     <table>
@@ -50,7 +50,7 @@
             <td>{{ form_row(sortieForm.duree,
                     {'attr': {'style': 'width:60px;float:left'}},
                     {'attr': {'type': 'number'}}
-                ) }}minutes</td>
+                ) }} minutes</td>
             <td><label>Latitude:</label></td>
             <td>{{ form_row(sortieForm.lieu.latitude) }}</td>
         </tr>

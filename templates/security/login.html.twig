@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} | Mon profil{% endblock %}
+{% block title %}{{ parent() }} | Connexion{% endblock %}
 
 {% block body %}
 <form method="post">
@@ -31,17 +31,10 @@
                 </button></td>
             <td><div class="checkbox mb-3">
 
-                    <label>
+                    <label class="labelDescription">
                         <input type="checkbox" name="_remember_me"> Se souvenir de moi
                     </label>
-                </div></td>
-        </tr>
-        <tr>
-            <td><div class="checkbox mb-3">
-
-
-                        <a href="{{ path('app_forgot_password_request') }}">Vous avez oublié votre mot de passe ?</a>
-
+                    <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié</a>
                 </div></td>
         </tr>
     </table>

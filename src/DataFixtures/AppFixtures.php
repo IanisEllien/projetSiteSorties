@@ -319,7 +319,7 @@ class AppFixtures extends Fixture
         $sortie = new Sortie();
         $sortie->setNom('Escape Game : à la recherche du bug dans cette superbe application');
         $sortie->setDateHeureDebut(new \DateTime('2022-06-12 20:00:00'));
-        $sortie->setDateLimiteInscription(new \DateTime('2022-06-09 17:00:00'));
+        $sortie->setDateLimiteInscription(new \DateTime('2022-06-11 17:00:00'));
         $sortie->setDuree(120);
         $sortie->setNbInscriptionMax(6);
         $sortie->setCampus($campus);

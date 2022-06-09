@@ -221,9 +221,9 @@ class AdminController extends AbstractController
                 $em->flush();
 
                 if ($cpt == 1) {
-                    $this->addFlash('success', $sortieEffacee?$cpt . ' participant a bien été supprimé. Une ou plusieurs sorties ont également été supprimées':$cpt . ' participant a bien été supprimé');
+                    $this->addFlash('success', $sortieEffacee?$cpt . ' participant a bien été supprimé. Une ou plusieurs sorties associées ont également été supprimées':$cpt . ' participant a bien été supprimé');
                 } else {
-                    $this->addFlash('success', $sortieEffacee?$cpt . ' participants ont bien été supprimés. Une ou plusieurs sorties ont également été supprimées':$cpt . ' participants ont bien été supprimés');
+                    $this->addFlash('success', $sortieEffacee?$cpt . ' participants ont bien été supprimés. Une ou plusieurs sorties associées ont également été supprimées':$cpt . ' participants ont bien été supprimés');
                 }
                 return $this->redirectToRoute('sorties_liste');
             } else {
