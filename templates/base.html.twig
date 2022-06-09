@@ -9,6 +9,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -40,18 +41,19 @@
                                     Gestion des utilisateurs
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">Inscription</a></li>
-                                    <li><a class="dropdown-item" href="#">Désactivation</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Suppression</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('admin_register') }}">Inscription</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('admin_desactiver') }}">Désactivation</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('admin_supprimer') }}">Suppression</a>
+                                    </li>
+                                    </li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}">Inscription</a>
-                            </li>
-                            </li>
                         {% endif %}
-
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{ path('sorties_liste') }}">Accueil</a>
                         </li>

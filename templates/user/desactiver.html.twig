@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="afficherProfil">
+    <h2 class="display-4 text-center">Désactiver des utilisateurs</h2>
+
+<form action="{{ path('admin_desactiver') }}" method="POST">
+<div class="table-custom table-responsive">
+    <table class="table table-striped table-hover container text-center " style="margin-top: 50px">
+        <thead>
+        <tr class="row">
+            <th class="col-9">Participant</th>
+            <th class="col-3">Désactiver</th>
+        </tr>
+        </thead>
+        <tbody>
+{% for participant in participants %}
+<tr class="row">
+
+    <th class="col-9">
+        {{ participant.pseudo }}
+    </th>
+        <th class="col-3">
+            <input type="checkbox" name="userID[]" id="user" value="{{ participant.id }}" >
+        </th>
+</tr>
+    {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <button class="btn" type="submit">Valider</button>
+    <a class="btn" href="{{ path('sorties_liste') }}">Annuler</a>
+</form>
+</div>
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} | Désactivation utilisateurs
+{% endblock %}
+

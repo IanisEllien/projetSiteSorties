@@ -57,6 +57,21 @@ class AppFixtures extends Fixture
         $participant->setCampus($campus);
         $manager->persist($participant);
 
+        // Pour test, participant inactif
+        $participant = new Participant();
+        $participant->setPseudo('Inactif');
+        $participant->setNom('IN');
+        $participant->setPrenom('Actif');
+        $participant->setTelephone('0621524210');
+        $participant->setEmail('inactif@campus-eni.fr');
+        $password = $this->hasher->hashPassword($participant,'Pa$$w0rd');
+        $participant->setPassword($password);
+        $participant->setAdministrateur(false);
+        $participant->setRoles(["ROLE_USER"]);
+        $participant->setActif(false);
+        $participant->setCampus($campus);
+        $manager->persist($participant);
+
         // Etats
 
         $etat = new Etat();

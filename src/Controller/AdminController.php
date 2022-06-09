@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Form\DesactivationType;
 use App\Form\InscriptionCsvType;
 use App\Form\ParticipantType;
 use App\Repository\CampusRepository;
@@ -10,6 +11,7 @@ use App\Repository\ParticipantRepository;
 use App\Security\AppAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\DocBlock\Serializer;
+use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,10 +27,13 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class RegistrationController extends AbstractController
+/**
+ * @Route("/admin", name="admin_")
+ */
+class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin/inscription/fichier", name="app_register_file")
+     * @Route("/inscription/fichier", name="register_file")
      */
     public function creerUserCSV(EntityManagerInterface $entityManager,
                                 CampusRepository $campusRepository,
@@ -111,7 +116,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/admin/inscription", name="app_register")
+     * @Route("/inscription", name="register")
      */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
@@ -146,4 +151,60 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/desactivation", name="desactiver")
+     */
+    public function desactiver(Request $request, ParticipantRepository $participantRepository, EntityManagerInterface $em): Response
+    {
+        $participants = $participantRepository->findBy(['actif' => 1], ['pseudo' => 'ASC']);
+
+        $ids = $request->request->get('userID');
+        $method = $request->getMethod();
+
+        if ($method === 'POST') {
+            if ($ids) {
+                $cpt = 0;
+                foreach ($ids as $id) {
+                    dump($ids);
+                    $participant = $participantRepository->find($id);
+                    $participant->setActif(false);
+                    $em->persist($participant);
+                    $cpt++;
+                }
+                $em->flush();
+
+                if ($cpt == 1) {
+                    $this->addFlash('success', $cpt . ' participant a bien été désactivé');
+                } else {
+                    $this->addFlash('success', $cpt . ' participants ont bien été désactivés');
+                }
+                return $this->redirectToRoute('sorties_liste');
+            } else {
+                $this->addFlash('warning', 'Veuillez sélectionner au moins un participant');
+            }
+        }
+
+        return $this->render('user/desactiver.html.twig', [
+            "participants" => $participants
+        ]);
+    }
+
+    /**
+     * @Route("/suppression", name="supprimer")
+     */
+    public function supprimer(int $id, ParticipantRepository $participantRepository): Response
+    {
+        $participant = $participantRepository->find($id);
+
+        if(!$participant){
+            throw $this->createNotFoundException('Ce profil n\'existe pas !');
+        }
+
+        return $this->render('user/afficherProfil.html.twig', [
+            "participant" => $participant
+        ]);
+    }
+
+
 }
