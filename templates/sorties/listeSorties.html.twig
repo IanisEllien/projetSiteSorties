@@ -94,6 +94,8 @@
                             <a href="{{ path('sorties_modifier', {'id': sortie.id}) }}">Modifier </a>
                             -
                             <a href="{{ path('sorties_publier', {'id': sortie.id}) }}"> Publier</a>
+                            -
+                            <a href="{{ path('sorties_annuler', {'id': sortie.id}) }}">Annuler</a>
                         {% else %}
                             <a href="{{ path('sorties_afficher', {'id': sortie.id}) }}">Afficher </a>
                         {% endif %}
@@ -103,12 +105,11 @@
                                 <a href="{{ path('sorties_annuler', {'id': sortie.id}) }}">Annuler</a>
                             {% elseif app.user.roles[0] == "ROLE_ADMIN" %}
                                 <a href="{{ path('sorties_annuler', {'id': sortie.id}) }}">Annuler</a>
-                                -
-                                <a href="{{ path('sorties_inscription', {'id': sortie.id}) }}">S'inscrire</a>
-                            {% elseif inscrit %}
-                                <a href="{{ path('sorties_desistement', {'id': sortie.id}) }}">Se désister</a>
+                                {% endif %}
+                            {% if inscrit %}
+                              -  <a href="{{ path('sorties_desistement', {'id': sortie.id}) }}">Se désister</a>
                             {% else %}
-                                <a href="{{ path('sorties_inscription', {'id': sortie.id}) }}">S'inscrire</a>
+                               - <a href="{{ path('sorties_inscription', {'id': sortie.id}) }}">S'inscrire</a>
                             {% endif %}
                         {% endif %}
                     {% if etat == "Fermé" %}

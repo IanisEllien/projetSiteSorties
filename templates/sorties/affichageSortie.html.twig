@@ -137,14 +137,18 @@
             {% for participant in sortie.participants %}
             <tr class="row">
                 <th class="col-6 col-md-3">
+                    <a href="{{ path('user_afficher', {"id": participant.id}) }}">
                     {{ participant.pseudo }}
+                    </a>
                 </th>
                 <th class="col-6 col-md-9">
                     {{ participant.prenom }} {{ participant.nom | upper }}
                 </th>
             </tr>
             {% endfor %}
+
     </table>
+        <a href="{{ path('sorties_liste') }}" class="btn">Retour</a>
 </div>
     {% endif %}
 {% endblock %}
