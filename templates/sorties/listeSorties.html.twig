@@ -26,15 +26,15 @@
     <table class="table table-striped table-hover container text-center " style="margin-top: 50px">
         <thead>
             <tr class="row">
-                <th class="col-3 col-sm-3 col-md-2 ">Nom de la sortie</th>
-                <th class="col-3 col-sm-3 col-md-2 ">Date de la sortie</th>
+                <th class="col-4 col-sm-4 col-md-2 ">Nom de la sortie</th>
+                <th class="col-4 col-sm-4 col-md-2 ">Date de la sortie</th>
                 <th class="col-md-1 Desktop">Clôture</th>
                 <th class="col-md-1 Desktop">Inscrit(s) / places</th>
                 <th class="col-md-1 Desktop">État</th>
                 <th class="col-md-1 Desktop">Inscrit</th>
                 <th class="col-md-2 Desktop">Organisateur</th>
                 <th class="col-md-2 Desktop">Actions</th>
-                <th class="col-3 col-sm-3 Smartphone">Lieu</th>
+                <th class="col-4 col-sm-4 Smartphone">Lieu</th>
             </tr>
         </thead>
         <tbody>
@@ -51,10 +51,10 @@
          {% if not (sortie.organisateur.pseudo is not same as (app.user.pseudo()) and sortie.etat.libelle == "Créée")  %}
             <tr class="row">
                 <td class="Desktop col-md-2 ">{{ sortie.nom }}</td>
-                <td class="Smartphone col-3 col-sm-3">
+                <td class="Smartphone col-4 col-sm-4">
                     <a href="{{ path('sorties_afficher', {'id': sortie.id}) }}">{{ sortie.nom }}</a>
                 </td>
-                <td class="col-3 col-sm-3 col-md-2 ">{{ sortie.dateHeureDebut | date('d/m/o H\\Hi' ) }}</td>
+                <td class="col-4 col-sm-4 col-md-2 ">{{ sortie.dateHeureDebut | date('d/m/o H\\Hi' ) }}</td>
                 <td class="col-md-1 Desktop">{{ sortie.dateLimiteInscription | date('d/m/o')}}</td>
                 <td class="col-md-1 Desktop">{{ sortie.participants|length }} / {{ sortie.nbInscriptionMax }}</td>
                 <td class="col-md-1 Desktop">
@@ -131,7 +131,7 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td class="col-3 col-sm-3 Smartphone">{{ sortie.lieu.ville.nom | upper }}</td>
+                <td class="col-4 col-sm-4 Smartphone">{{ sortie.lieu.ville.nom | upper }}</td>
             </tr>
         {% endif %}
     {% endfor %}
