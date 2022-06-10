@@ -85,11 +85,25 @@ class SortieRepository extends ServiceEntityRepository
 
             if (in_array('noninscrit',$filtres->typeSortie) && !in_array('inscrit',$filtres->typeSortie))
             {
-                $queryBuilder = $queryBuilder
+                $expression = $this->getEntityManager()->getExpressionBuilder();
+
+                $queryBuilder->andWhere($expression->notIn(
+                    's.id',
+                        // requete qui donne les sorties ou je suis inscrit
+                        $this->getEntityManager()->createQueryBuilder()
+                            ->select('sortie2.id')
+                            ->from(Sortie::class, 'sortie2')
+                            ->join('sortie2.participants', 'p2')
+                            ->andWhere('p2 = :id')
+                            ->getDQL()
+                ))
+                    ->setParameter(':id', $user->getId());
+
+                /*$queryBuilder = $queryBuilder
                     ->leftJoin('s.participants','pa','WITH','pa.pseudo = :user')
                     //->join('s.participants','pa')
                     //->andWhere('pa.pseudo != :user')
-                    ->setParameter('user',$user->getPseudo());
+                    ->setParameter('user',$user->getPseudo());*/
             }
 
             if (in_array('orga',$filtres->typeSortie))
@@ -171,7 +185,6 @@ class SortieRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->join('s.organisateur','o');
 
-
         if (in_array('inscrit',$filtres))
         {
             $queryBuilder = $queryBuilder
@@ -182,10 +195,27 @@ class SortieRepository extends ServiceEntityRepository
 
         if (in_array('noninscrit',$filtres))
         {
-            $queryBuilder = $queryBuilder
-                ->leftJoin('s.participants','pa','WITH','pa.pseudo = :user')
-                ->andWhere('o.id <> :user')
-                ->setParameter('user',$user->getId());
+            $expression = $this->getEntityManager()->getExpressionBuilder();
+
+            $queryBuilder->andWhere($expression->notIn(
+                's.id',
+                // requete qui donne les sorties ou je suis inscrit
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('sortie2.id')
+                    ->from(Sortie::class, 'sortie2')
+                    ->join('sortie2.participants', 'p2')
+                    ->andWhere('p2 = :id')
+                    ->getDQL()
+            ))
+                ->andWhere('o.id != :id')
+                ->setParameter(':id', $user->getId());
+
+            /*$queryBuilder = $queryBuilder
+                //->leftJoin('s.participants','pa')
+                ->leftJoin('s.participants','pa','WITH','pa.id = :user')
+                ->andWhere('o.id != :user')
+                //->andWhere('pa.id <> :user')
+                ->setParameter('user',$user->getId());*/
         }
 
         if (in_array('orga',$filtres))
